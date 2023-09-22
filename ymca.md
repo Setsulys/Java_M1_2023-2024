@@ -143,6 +143,6 @@ public sealed interface People permits VillagePeople,Minion {
 	...
 }
 ```
-On doit donc ajouter le ``sealed`` et permetre les ``VillagePeople`` et les ``Minions``
+On doit donc ajouter le ``sealed`` et permetre les ``VillagePeoples`` et les ``Minions``
 
 ### 8. On veut périodiquement faire un geste commercial pour une maison envers une catégorie/sorte de VillagePeople en appliquant une réduction de 80% pour tous les VillagePeople ayant la même sorte (par exemple, pour tous les BIKERs). Pour cela, on se propose d'ajouter une méthode addDiscount qui prend une sorte en paramètre et offre un discount pour tous les VillagePeople de cette sorte. Si l'on appelle deux fois addDiscount avec la même sorte, le discount n'est appliqué qu'une fois.
