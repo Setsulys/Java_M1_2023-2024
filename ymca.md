@@ -140,8 +140,7 @@ Je ne comprend pas cette question, cependant les tests sont validés
 
 ```java
 public sealed interface People permits VillagePeople,Minion {
-
-	public String name();
+	...
 }
 ```
 On doit donc ajouter le ``sealed`` et permetre les ``VillagePeople`` et les ``Minions``
