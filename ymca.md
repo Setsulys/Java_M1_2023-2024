@@ -131,3 +131,19 @@ public final class House {
 }
 ```
 On doit faire le prix moyen dans la maison, sachant qu'une maison peut contenir des ``VillagePeople`` ou des ``Minions`` on doit les differencier donc on doit faire un switch sur l'interface pour chaque élément de la liste. Comme j'avais une erreur sans j'ai du mettre le cas ``default`` on doit utiliser des doubles pour les NaN
+
+### 6. En fait, cette implantation n'est pas satisfaisante car elle ajoute une méthode publique dans VillagePeople et Minion alors que c'est un détail d'implantation. Au lieu d'utiliser la POO (programmation orienté objet), on va utiliser la POD (programmation orienté data) qui consiste à utiliser le pattern matching pour connaître le prix par nuit d'un VillagePeople ou un Minion.
+
+Je ne comprend pas cette question, cependant les tests sont validés
+
+### 7. L'implantation précédente pose problème : il est possible d'ajouter une autre personne qu'un VillagePeople ou un Minion, mais celle-ci ne sera pas prise en compte par le pattern matching. Pour cela, on va interdire qu'une personne soit autre chose qu'un VillagePeople ou un Minion en scellant le super type commun.
+
+```java
+public sealed interface People permits VillagePeople,Minion {
+
+	public String name();
+}
+```
+On doit donc ajouter le ``sealed`` et permetre les ``VillagePeople`` et les ``Minions``
+
+### 8. On veut périodiquement faire un geste commercial pour une maison envers une catégorie/sorte de VillagePeople en appliquant une réduction de 80% pour tous les VillagePeople ayant la même sorte (par exemple, pour tous les BIKERs). Pour cela, on se propose d'ajouter une méthode addDiscount qui prend une sorte en paramètre et offre un discount pour tous les VillagePeople de cette sorte. Si l'on appelle deux fois addDiscount avec la même sorte, le discount n'est appliqué qu'une fois.

@@ -1,6 +1,6 @@
 package fr.uge.ymca;
 
-public interface People {
+public sealed interface People permits VillagePeople,Minion {
 
 	public String name();
 }

@@ -230,35 +230,35 @@ public class HouseTest {
   }
 
 
-//  @Nested
-//  public class Q6 {
-//    @Test
-//    public void commonSupertypeHasOnlyOneMethodNamedName() {
-//      assertAll(
-//          () -> assertEquals(1, VillagePeople.class.getInterfaces()[0].getMethods().length),
-//          () -> assertEquals(1, Minion.class.getInterfaces()[0].getMethods().length),
-//          () -> assertEquals("name", VillagePeople.class.getInterfaces()[0].getMethods()[0].getName()),
-//          () -> assertEquals("name", Minion.class.getInterfaces()[0].getMethods()[0].getName())
-//      );
-//    }
-//  }
-//
-//
-//  @Nested
-//  public class Q7 {
-//    @Test
-//    public void commonSupertypeIsSealed() {
-//      assertAll(
-//          () -> assertEquals(List.of(VillagePeople.class.getInterfaces()), List.of(Minion.class.getInterfaces())),
-//          () -> assertEquals(1, VillagePeople.class.getInterfaces().length),
-//          () -> assertEquals(1, Minion.class.getInterfaces().length),
-//          () -> assertTrue(VillagePeople.class.getInterfaces()[0].isSealed()),
-//          () -> assertTrue(Minion.class.getInterfaces()[0].isSealed())
-//      );
-//    }
-//  }
-//
-//
+  @Nested
+  public class Q6 {
+    @Test
+    public void commonSupertypeHasOnlyOneMethodNamedName() {
+      assertAll(
+          () -> assertEquals(1, VillagePeople.class.getInterfaces()[0].getMethods().length),
+          () -> assertEquals(1, Minion.class.getInterfaces()[0].getMethods().length),
+          () -> assertEquals("name", VillagePeople.class.getInterfaces()[0].getMethods()[0].getName()),
+          () -> assertEquals("name", Minion.class.getInterfaces()[0].getMethods()[0].getName())
+      );
+    }
+  }
+
+
+  @Nested
+  public class Q7 {
+    @Test
+    public void commonSupertypeIsSealed() {
+      assertAll(
+          () -> assertEquals(List.of(VillagePeople.class.getInterfaces()), List.of(Minion.class.getInterfaces())),
+          () -> assertEquals(1, VillagePeople.class.getInterfaces().length),
+          () -> assertEquals(1, Minion.class.getInterfaces().length),
+          () -> assertTrue(VillagePeople.class.getInterfaces()[0].isSealed()),
+          () -> assertTrue(Minion.class.getInterfaces()[0].isSealed())
+      );
+    }
+  }
+
+
 //  @Nested
 //  public class Q8 {
 //    @Test
