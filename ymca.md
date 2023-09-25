@@ -134,7 +134,19 @@ On doit faire le prix moyen dans la maison, sachant qu'une maison peut contenir 
 
 ### 6. En fait, cette implantation n'est pas satisfaisante car elle ajoute une méthode publique dans VillagePeople et Minion alors que c'est un détail d'implantation. Au lieu d'utiliser la POO (programmation orienté objet), on va utiliser la POD (programmation orienté data) qui consiste à utiliser le pattern matching pour connaître le prix par nuit d'un VillagePeople ou un Minion.
 
-Je ne comprend pas cette question, cependant les tests sont validés
+```java
+public final class House {
+    ...
+	public double averagePrice() {
+		return house.stream().mapToDouble(e -> switch(e) {
+		case VillagePeople __ -> 100;
+		case Minion __ -> 1;
+		default -> 0;
+		}).average().orElse(Double.NaN);
+	}
+}
+```
+Je remplace les variables ``VillagePeople k`` et ``Minion m`` par des wildcards.
 
 ### 7. L'implantation précédente pose problème : il est possible d'ajouter une autre personne qu'un VillagePeople ou un Minion, mais celle-ci ne sera pas prise en compte par le pattern matching. Pour cela, on va interdire qu'une personne soit autre chose qu'un VillagePeople ou un Minion en scellant le super type commun.
 
@@ -143,6 +155,44 @@ public sealed interface People permits VillagePeople,Minion {
 	...
 }
 ```
-On doit donc ajouter le ``sealed`` et permetre les ``VillagePeoples`` et les ``Minions``
+On doit donc ajouter le ``sealed`` et permetre les ``VillagePeoples`` et les ``Minions`` ce qui nous permet d'enlever le ``case _ -> ...`` du pattern matching
 
 ### 8. On veut périodiquement faire un geste commercial pour une maison envers une catégorie/sorte de VillagePeople en appliquant une réduction de 80% pour tous les VillagePeople ayant la même sorte (par exemple, pour tous les BIKERs). Pour cela, on se propose d'ajouter une méthode addDiscount qui prend une sorte en paramètre et offre un discount pour tous les VillagePeople de cette sorte. Si l'on appelle deux fois addDiscount avec la même sorte, le discount n'est appliqué qu'une fois.
+
+```java
+public final class House {
+	...
+	private final HashSet<Kind> discount = new HashSet<>();
+	...
+	public double averagePrice() {
+		return house.stream().mapToDouble(e -> switch(e) {
+		case VillagePeople (var __,var kind) -> discount.contains(kind)?20:100;
+		case Minion __ -> 1;
+		}).average().orElse(Double.NaN);
+	}
+	
+	public void addDiscount(Kind kind) {
+		Objects.requireNonNull(kind);
+		discount.add(kind);
+	}
+}
+```
+On ajoute la methode ``addDiscount`` qui ajoute les kinds dans un``HashSet`` et on doit modifier le cas ``VillagePeople`` où on fait un record Pattern pour travailler sur le ``kind`` de ``VillagePeople``
+
+### 9. Enfin, on souhaite pouvoir supprimer l'offre commerciale (discount) en ajoutant la méthode removeDiscount qui supprime le discount si celui-ci a été ajouté précédemment ou plante s'il n'y a pas de discount pour la sorte prise en paramètre.
+```java
+public final class House {
+	...
+	public void removeDiscount(Kind kind) {
+		Objects.requireNonNull(kind);
+		if(!discount.contains(kind)) {
+			throw new IllegalStateException();
+		}
+		discount.removeIf(e -> e.equals(kind));
+	}
+}
+```
+On ajoute la méthode ``removeDiscount`` et j'utilise un ``removeIf`` pour ne retirer que ``Kind`` qu'on a besoin
+
+
+### 10. **Optionnellement**, faire en sorte que l'on puisse ajouter un discount suivi d'un pourcentage de réduction, c'est à dire un entier entre 0 et 100, en implantant une méthode addDiscount(kind, percent). Ajouter également une méthode priceByDiscount qui renvoie une table associative qui a un pourcentage renvoie la somme des prix par nuit auxquels on a appliqué ce pourcentage (la somme est aussi un entier). La somme totale doit être la même que la somme de tous les prix par nuit (donc ne m'oubliez pas les minions). Comme précédemment, les pourcentages ne se cumulent pas si on appelle addDiscount plusieurs fois.

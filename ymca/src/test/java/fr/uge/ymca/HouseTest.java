@@ -259,126 +259,126 @@ public class HouseTest {
   }
 
 
-//  @Nested
-//  public class Q8 {
-//    @Test
-//    public void discountWithOnlyVillagePeople() {
-//      var house = new House();
-//      house.addDiscount(Kind.NATIVE);
-//      house.add(new VillagePeople("Lee", Kind.BIKER));
-//      house.add(new VillagePeople("Felipe", Kind.NATIVE));
-//      assertEquals(60.0, house.averagePrice(), 0.00001);
-//    }
-//
-//    @Test
-//    public void discount() {
-//      var house = new House();
-//      house.addDiscount(Kind.BIKER);
-//      house.add(new VillagePeople("Lee", Kind.BIKER));
-//      house.add(new VillagePeople("Felipe", Kind.NATIVE));
-//      house.add(new Minion("Stuart"));
-//      house.add(new Minion("Kevin"));
-//      assertEquals(30.5, house.averagePrice(), 0.00001);
-//    }
-//
-//    @Test
-//    public void discountCanAddTheSameDiscountTwice() {
-//      var house = new House();
-//      house.addDiscount(Kind.COP);
-//      house.addDiscount(Kind.COP);
-//      house.add(new VillagePeople("Victor", Kind.COP));
-//      assertEquals(20.0, house.averagePrice(), 0.00001);
-//    }
-//
-//    @Test
-//    public void precondition() {
-//      var house = new House();
-//      assertThrows(NullPointerException.class, () -> house.addDiscount(null));
-//    }
-//  }
-//
-//
-//  @Nested
-//  public class Q9 {
-//    @Test
-//    public void discount() {
-//      var house = new House();
-//      house.addDiscount(Kind.BIKER);
-//      house.add(new VillagePeople("Lee", Kind.BIKER));
-//      house.add(new VillagePeople("Felipe", Kind.NATIVE));
-//      house.add(new Minion("Stuart"));
-//      house.add(new Minion("Kevin"));
-//      house.removeDiscount(Kind.BIKER);
-//      assertEquals(50.5, house.averagePrice(), 0.00001);
-//    }
-//
-//    @Test
-//    public void preconditions() {
-//      assertAll(
-//          () -> assertThrows(NullPointerException.class, () -> new House().removeDiscount(null)),
-//          () -> assertThrows(IllegalStateException.class, () -> new House().removeDiscount(Kind.CONSTRUCTION)),
-//          () -> assertThrows(IllegalStateException.class, () -> {
-//            var house = new House();
-//            house.addDiscount(Kind.COWBOY);
-//            house.addDiscount(Kind.COWBOY);
-//            house.removeDiscount(Kind.COWBOY);
-//            house.removeDiscount(Kind.COWBOY);
-//          })
-//      );
-//    }
-//  }
-//
-//  @Nested
-//  public class Q10 {
-//    @Test
-//    public void addDiscount() {
-//      var house = new House();
-//      house.addDiscount(Kind.COWBOY, 90);
-//      house.add(new VillagePeople("David", Kind.CONSTRUCTION));
-//      house.add(new VillagePeople("Randy", Kind.COWBOY));
-//      house.add(new Minion("Kevin"));
-//      assertEquals(37.0, house.averagePrice(), 0.00001);
-//    }
-//
-//    @Test
-//    public void removeDiscount() {
-//      var house = new House();
-//      house.addDiscount(Kind.ATHLETE, 10);
-//      house.add(new VillagePeople("David", Kind.SAILOR));
-//      house.add(new VillagePeople("Randy", Kind.ATHLETE));
-//      house.add(new Minion("Kevin"));
-//      house.removeDiscount(Kind.ATHLETE);
-//      assertEquals(67.0, house.averagePrice(), 0.00001);
-//    }
-//
-//    @Test
-//    public void priceByDiscount() {
-//      var house = new House();
-//      house.addDiscount(Kind.NATIVE, 40);
-//      house.addDiscount(Kind.COP, 10);
-//      house.add(new VillagePeople("Lee", Kind.BIKER));
-//      house.add(new VillagePeople("Felipe", Kind.NATIVE));
-//      house.add(new VillagePeople("Alex", Kind.GI));
-//      house.add(new VillagePeople("Mark", Kind.CONSTRUCTION));
-//      house.add(new VillagePeople("David", Kind.COWBOY));
-//      house.add(new VillagePeople("Victor", Kind.COP));
-//      house.add(new VillagePeople("Ray", Kind.COP));
-//      house.add(new Minion("Stuart"));
-//      house.add(new Minion("Kevin"));
-//      house.add(new Minion("Bob"));
-//      var priceByDiscount = house.priceByDiscount();
-//      assertEquals(
-//          Map.of(0, 403, 10, 180, 40, 60), priceByDiscount
-//      );
-//    }
-//
-//    @Test
-//    public void preconditions() {
-//      assertAll(
-//          () -> assertThrows(NullPointerException.class, () -> new House().addDiscount(null, 12)),
-//          () -> assertThrows(IllegalArgumentException.class, () -> new House().addDiscount(Kind.GIGOLO, -1)),
-//          () -> assertThrows(IllegalArgumentException.class, () -> new House().addDiscount(Kind.ADMIRAL, 101))
-//      );
-//    }
-//  }
+  @Nested
+  public class Q8 {
+    @Test
+    public void discountWithOnlyVillagePeople() {
+      var house = new House();
+      house.addDiscount(Kind.NATIVE);
+      house.add(new VillagePeople("Lee", Kind.BIKER));
+      house.add(new VillagePeople("Felipe", Kind.NATIVE));
+      assertEquals(60.0, house.averagePrice(), 0.00001);
+    }
+
+    @Test
+    public void discount() {
+      var house = new House();
+      house.addDiscount(Kind.BIKER);
+      house.add(new VillagePeople("Lee", Kind.BIKER));
+      house.add(new VillagePeople("Felipe", Kind.NATIVE));
+      house.add(new Minion("Stuart"));
+      house.add(new Minion("Kevin"));
+      assertEquals(30.5, house.averagePrice(), 0.00001);
+    }
+
+    @Test
+    public void discountCanAddTheSameDiscountTwice() {
+      var house = new House();
+      house.addDiscount(Kind.COP);
+      house.addDiscount(Kind.COP);
+      house.add(new VillagePeople("Victor", Kind.COP));
+      assertEquals(20.0, house.averagePrice(), 0.00001);
+    }
+
+    @Test
+    public void precondition() {
+      var house = new House();
+      assertThrows(NullPointerException.class, () -> house.addDiscount(null));
+    }
+  }
+
+
+  @Nested
+  public class Q9 {
+    @Test
+    public void discount() {
+      var house = new House();
+      house.addDiscount(Kind.BIKER);
+      house.add(new VillagePeople("Lee", Kind.BIKER));
+      house.add(new VillagePeople("Felipe", Kind.NATIVE));
+      house.add(new Minion("Stuart"));
+      house.add(new Minion("Kevin"));
+      house.removeDiscount(Kind.BIKER);
+      assertEquals(50.5, house.averagePrice(), 0.00001);
+    }
+
+    @Test
+    public void preconditions() {
+      assertAll(
+          () -> assertThrows(NullPointerException.class, () -> new House().removeDiscount(null)),
+          () -> assertThrows(IllegalStateException.class, () -> new House().removeDiscount(Kind.CONSTRUCTION)),
+          () -> assertThrows(IllegalStateException.class, () -> {
+            var house = new House();
+            house.addDiscount(Kind.COWBOY);
+            house.addDiscount(Kind.COWBOY);
+            house.removeDiscount(Kind.COWBOY);
+            house.removeDiscount(Kind.COWBOY);
+          })
+      );
+    }
+  }
+
+  @Nested
+  public class Q10 {
+    @Test
+    public void addDiscount() {
+      var house = new House();
+      house.addDiscount(Kind.COWBOY, 90);
+      house.add(new VillagePeople("David", Kind.CONSTRUCTION));
+      house.add(new VillagePeople("Randy", Kind.COWBOY));
+      house.add(new Minion("Kevin"));
+      assertEquals(37.0, house.averagePrice(), 0.00001);
+    }
+
+    @Test
+    public void removeDiscount() {
+      var house = new House();
+      house.addDiscount(Kind.ATHLETE, 10);
+      house.add(new VillagePeople("David", Kind.SAILOR));
+      house.add(new VillagePeople("Randy", Kind.ATHLETE));
+      house.add(new Minion("Kevin"));
+      house.removeDiscount(Kind.ATHLETE);
+      assertEquals(67.0, house.averagePrice(), 0.00001);
+    }
+
+    @Test
+    public void priceByDiscount() {
+      var house = new House();
+      house.addDiscount(Kind.NATIVE, 40);
+      house.addDiscount(Kind.COP, 10);
+      house.add(new VillagePeople("Lee", Kind.BIKER));
+      house.add(new VillagePeople("Felipe", Kind.NATIVE));
+      house.add(new VillagePeople("Alex", Kind.GI));
+      house.add(new VillagePeople("Mark", Kind.CONSTRUCTION));
+      house.add(new VillagePeople("David", Kind.COWBOY));
+      house.add(new VillagePeople("Victor", Kind.COP));
+      house.add(new VillagePeople("Ray", Kind.COP));
+      house.add(new Minion("Stuart"));
+      house.add(new Minion("Kevin"));
+      house.add(new Minion("Bob"));
+      var priceByDiscount = house.priceByDiscount();
+      assertEquals(
+          Map.of(0, 403, 10, 180, 40, 60), priceByDiscount
+      );
+    }
+
+    @Test
+    public void preconditions() {
+      assertAll(
+          () -> assertThrows(NullPointerException.class, () -> new House().addDiscount(null, 12)),
+          () -> assertThrows(IllegalArgumentException.class, () -> new House().addDiscount(Kind.GIGOLO, -1)),
+          () -> assertThrows(IllegalArgumentException.class, () -> new House().addDiscount(Kind.ADMIRAL, 101))
+      );
+    }
+  }
 }
