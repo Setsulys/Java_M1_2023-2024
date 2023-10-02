@@ -5,9 +5,12 @@ import java.io.IOException;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.regex.Pattern;
 
 public final class StreamEditor {
 
@@ -18,7 +21,23 @@ public final class StreamEditor {
 		static Rule andThen(Rule rule1, Rule rule2) {
 			Objects.requireNonNull(rule1);
 			Objects.requireNonNull(rule2);
-			return (String str) -> rule1.rewrite(str).flatMap(rule2::rewrite);
+			return (String line) -> rule1.rewrite(line).flatMap(rule2::rewrite);
+		}
+		default Rule andThen(Rule rule) {
+			Objects.requireNonNull(rule);
+			return (String line) -> rule.rewrite(this.rewrite(line).get());
+		}
+		static Rule guard(Predicate<String> function,Rule rule) {
+			Objects.requireNonNull(function);
+			Objects.requireNonNull(rule);
+			return (String line) ->{
+				if(function.test(line)) {
+					return rule.rewrite(line);
+				}
+				else {
+					return Optional.of(line);
+				}
+			};
 		}
 	}
 	
@@ -55,20 +74,36 @@ public final class StreamEditor {
 
 	public static Rule createRules(String string) {
 		Objects.requireNonNull(string);
-		Rule rule =line ->Optional.of("");
+		if(Pattern.compile(".*i=.*").matcher(string).matches()) {
+			System.out.println(string.split("i=")[1].split(";")[1]);
+			String strPred =string.split("i=")[1].split(";")[0];
+			Predicate<String> pred = s -> s.matches(strPred);
+			string = string.split("i=")[1].split(";")[1];
+		}
+		
+		Rule rule = line ->Optional.of(line);
 		for(var c=0; c<string.length();c++) {
 			Rule newRule = switch(String.valueOf(string.charAt(c))) {
-			case "s" ->rule = line -> Optional.of(line.strip()); 
-			case "u" ->rule = line -> Optional.of(line.toUpperCase(Locale.FRENCH));
-			case "l" ->rule = line -> Optional.of(line.toLowerCase(Locale.FRENCH));
-			case "d" ->rule = line ->Optional.empty();
-			case "" -> rule =line ->Optional.of("");
+			case "s" ->line -> Optional.of(line.strip());
+			case "u" ->line -> Optional.of(line.toUpperCase(Locale.FRENCH));
+			case "l" ->line -> Optional.of(line.toLowerCase(Locale.FRENCH));
+			case "d" ->line -> Optional.empty();
+			case "" -> line -> Optional.of(line);
 			default -> throw new IllegalArgumentException();
 			};
 			rule = Rule.andThen(rule,newRule);
+			//Rule.guard(pred, rule);
 		}
-		
 		return rule;
 	}
 	
+	public static void main(String[] args) {
+		String test = "i=foo;u";
+		if(Pattern.compile(".*i=.*").matcher(test).matches()) {
+			System.out.println("true");
+			String[] res = test.split("i=")[1].split(";");
+			System.out.println(res[0]+" and "+res[1]);
+		}
+		
+	}
 }

@@ -93,11 +93,51 @@ public final class StreamEditor {
 		static Rule andThen(Rule rule1, Rule rule2) {
 			Objects.requireNonNull(rule1);
 			Objects.requireNonNull(rule2);
-			return (String str) -> rule2.rewrite(rule1.rewrite(str).get());
+			return (String line) -> rule1.rewrite(line).flatMap(rule2::rewrite);
 		}
 	}
     ...
-
+		public static Rule createRules(String string) {
+		Objects.requireNonNull(string);
+		Rule rule = line ->Optional.of(line);
+		for(var c=0; c<string.length();c++) {
+			Rule newRule = switch(String.valueOf(string.charAt(c))) {
+			case "s" ->line -> Optional.of(line.strip());
+			case "u" ->line -> Optional.of(line.toUpperCase(Locale.FRENCH));
+			case "l" ->line -> Optional.of(line.toLowerCase(Locale.FRENCH));
+			case "d" ->line -> Optional.empty();
+			case "" -> line -> Optional.of(line);
+			default -> throw new IllegalArgumentException();
+			};
+			rule = Rule.andThen(rule,newRule);
+		}
+		return rule;
+	}
 
 }
 ```
+On doit modifier la méthode ``createRules`` pour qu'elle puisse prendre plusieurs options a la suite, pour ca on utilise un for qui décompose la string et on fait le switch pour récuperer la nouvelle règle et on applique celle ci a l'ancienne règle avec ``andThen`
+
+#### 6. En fait, déclarer andThen en tant que méthode statique n'est pas très "objet" ... En orienté objet, on préfèrerait écrire rule1.andThen(rule2) plutôt que Rule.andThen(rule1, rule2). On va donc implanter une nouvelle méthode andThen dans Rule, cette fois-ci comme une méthode d'instance.
+```java
+public final class StreamEditor {
+
+	@FunctionalInterface
+	public interface Rule{
+		...
+		default Rule andThen(Rule rule) {
+			Objects.requireNonNull(rule);
+			return (String line) -> rule.rewrite(this.rewrite(line).get());
+		}
+	}
+	...
+}
+```
+#### 7. On souhaite implanter la règle qui correspond au if, par exemple, "i=foo;u", qui veut dire si la ligne courante est égal à foo (le texte entre le '=' et le ';') alors, on met en majuscules sinon on recopie la ligne.<br>Avant de modifier createRules(), on va créer, dans Rule, une méthode statique guard(function, rule) qui prend en paramètre une fonction et une règle et crée une règle qui est appliquée à la ligne courante si la fonction renvoie vrai pour cette ligne. Autrement dit, on veut pouvoir créer une règle qui s'applique uniquement aux lignes pour lesquelles la fonction renvoie vrai.<br>Quelle interface fonctionnelle correspond à une fonction qui prend une String et renvoie un boolean ?
+
+```java
+
+```
+L'interface fonctionnel qui prend une String et renvoie un boolean est un ``Predicate<String>``
+
+```````````````````````````````
