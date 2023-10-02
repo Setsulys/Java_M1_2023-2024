@@ -7,7 +7,7 @@ public class StreamEditor {
 
 	@FunctionalInterface
 	public interface Rule{
-		Optional<String> rewrite(String s);
+		Optional<String> rewrite(String str);
 	}
 }
 ```
@@ -28,7 +28,8 @@ public final class StreamEditor {
 		while((line = reader.readLine())!= null) {
 			var rew = rule.rewrite(line);
 			if(!rew.isEmpty()) {
-				writer.write(rew.get()+"\n");
+				writer.write(rew.get());
+				writer.write("\n");
 			}
 		}
 	}
@@ -46,15 +47,9 @@ public final class StreamEditor {
 		Objects.requireNonNull(output);
 		try(var reader =Files.newBufferedReader(input)){
 			try(var writer = Files.newBufferedWriter(output)){
-				String line;
-				while((line = reader.readLine())!=null) {
-					var rew = rule.rewrite(line);
-					if(!rew.isEmpty()) {
-						writer.write(rew.get()+"\n");
-					}
-				}
+				rewrite(reader,writer);
 			}
-		}
+		}	
 	}
 }
 ```
@@ -73,16 +68,14 @@ public final class StreamEditor {
     ...
 	public static Rule createRules(String string) {
 		Objects.requireNonNull(string);
-		Rule rule;
-		switch(string) {
-		case "s" ->{rule = line -> Optional.of(line.trim()); }
-		case "u" ->{rule = line -> Optional.of(line.toUpperCase(Locale.FRENCH));}
-		case "l" ->{rule = line -> Optional.of(line.toLowerCase(Locale.FRENCH));}
-		case "d" -> {rule = line ->Optional.empty();}
+		return switch(string) {
+		case "s" ->line -> Optional.of(line.strip()); 
+		case "u" ->line -> Optional.of(line.toUpperCase(Locale.FRENCH));
+		case "l" ->line -> Optional.of(line.toLowerCase(Locale.FRENCH));
+		case "d" ->line ->Optional.empty();
 		default -> {throw new IllegalArgumentException();}
-		}
-		return rule;
-	}	
+		};
+	}
 }
 ```
 On doit passer par un ``switch`` qui crééra la règle selon le caractère spécifié. Le ``default`` envera un ``IllegalArgumentException()``
@@ -100,9 +93,11 @@ public final class StreamEditor {
 		static Rule andThen(Rule rule1, Rule rule2) {
 			Objects.requireNonNull(rule1);
 			Objects.requireNonNull(rule2);
-			return null;//rule2.rewrite(rule1.rewrite(""));
+			return (String str) -> rule2.rewrite(rule1.rewrite(str).get());
 		}
 	}
     ...
+
+
 }
 ```
