@@ -71,16 +71,9 @@ public final class StreamEditor {
 			}
 		}
 	}
-
-	public static Rule createRules(String string) {
+	
+	private static Rule switchOnRule(String string) {
 		Objects.requireNonNull(string);
-		if(Pattern.compile(".*i=.*").matcher(string).matches()) {
-			System.out.println(string.split("i=")[1].split(";")[1]);
-			String strPred =string.split("i=")[1].split(";")[0];
-			Predicate<String> pred = s -> s.matches(strPred);
-			string = string.split("i=")[1].split(";")[1];
-		}
-		
 		Rule rule = line ->Optional.of(line);
 		for(var c=0; c<string.length();c++) {
 			Rule newRule = switch(String.valueOf(string.charAt(c))) {
@@ -92,18 +85,23 @@ public final class StreamEditor {
 			default -> throw new IllegalArgumentException();
 			};
 			rule = Rule.andThen(rule,newRule);
-			//Rule.guard(pred, rule);
 		}
 		return rule;
 	}
-	
-	public static void main(String[] args) {
-		String test = "i=foo;u";
-		if(Pattern.compile(".*i=.*").matcher(test).matches()) {
-			System.out.println("true");
-			String[] res = test.split("i=")[1].split(";");
-			System.out.println(res[0]+" and "+res[1]);
+
+	public static Rule createRules(String string) {
+		Objects.requireNonNull(string);
+		Rule rule = line ->Optional.of(line);
+		if(Pattern.compile(".*i=.*").matcher(string).matches()) {
+			String strPred =string.split("i=")[1].split(";")[0];
+			Predicate<String> pred = s -> s.matches(strPred);
+			string = string.split("i=")[1].split(";")[1];
+			rule= switchOnRule(string);
+			Rule.guard(pred, rule);
 		}
-		
+		else {
+			rule = switchOnRule(string);
+		}
+		return rule;
 	}
 }
