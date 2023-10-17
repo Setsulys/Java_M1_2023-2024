@@ -25,19 +25,12 @@ public final class StreamEditor {
 		}
 		default Rule andThen(Rule rule) {
 			Objects.requireNonNull(rule);
-			return (String line) -> rule.rewrite(this.rewrite(line).get());
+			return (String line) -> this.rewrite(line).flatMap(rule::rewrite);
 		}
 		static Rule guard(Predicate<String> function,Rule rule) {
 			Objects.requireNonNull(function);
 			Objects.requireNonNull(rule);
-			return (String line) ->{
-				if(function.test(line)) {
-					return rule.rewrite(line);
-				}
-				else {
-					return Optional.of(line);
-				}
-			};
+			return (String line) -> function.test(line)?rule.rewrite(line):Optional.of(line);
 		}
 	}
 	
@@ -84,7 +77,7 @@ public final class StreamEditor {
 			case "" -> line -> Optional.of(line);
 			default -> throw new IllegalArgumentException();
 			};
-			rule = Rule.andThen(rule,newRule);
+			rule = rule.andThen(newRule);
 		}
 		return rule;
 	}
