@@ -174,192 +174,192 @@ public class HashTableSetTest {
   }
 
 
-//  @Nested
-//  public class Q3 {
-//
-//    @Test
-//    public void shouldDoNoThingWhenForEachCalledOnEmptySet() {
-//      var set = new HashTableSet();
-//      set.forEach(__ -> fail("should not be called"));
-//    }
-//
-//    @Test
-//    public void shouldComputeTheSumOfAllTheElementsInASetUsingForEachAngGetTheSameAsTheFormula() {
-//      var length = 100;
-//      var set = new HashTableSet();
-//      IntStream.range(0, length).forEach(set::add);
-//      var box = new Object() { int sum; };
-//      set.forEach(element -> box.sum += (int) element);
-//      assertEquals(length * (length - 1) / 2, box.sum);
-//    }
-//
-//    @Test
-//    public void shouldNotCountTheSameValueTwice() {
-//      var set = new HashTableSet();
-//      IntStream.range(0, 100).map(i -> i / 2).forEach(set::add);
-//      assertEquals(50, set.size());
-//    }
-//
-//    @Test
-//    public void shouldAddAllTheElementsOfASetToAListUsingForEach() {
-//      var set = new HashTableSet();
-//      IntStream.range(0, 100).forEach(set::add);
-//      var list = new ArrayList<>();
-//      set.forEach(list::add);
-//      list.sort(null);
-//      IntStream.range(0, 100).forEach(i -> assertEquals(i, list.get(i)));
-//    }
-//
-//    @Test
-//    public void shouldNotUseNullAsAParameterForForEach() {
-//      var set = new HashTableSet();
-//      assertThrows(NullPointerException.class, () -> set.forEach(null));
-//    }
-//  }
-//
-//
-//  @Nested
-//  class Q4 {
-//
-//    @Test
-//    public void shouldFindAPreviouslyInsertedValue() {
-//      var set = new HashTableSet();
-//      set.add("foo");
-//      assertAll(
-//          () -> assertTrue(set.contains("foo")),
-//          () -> assertFalse(set.contains("bar"))
-//      );
-//    }
-//
-//    @Test
-//    public void shouldNotFindAnythingContainedInAnEmptySet() {
-//      var set = new HashTableSet();
-//      assertFalse(set.contains(42));
-//      assertFalse(set.contains("foo"));
-//    }
-//
-//    @Test
-//    public void shouldNotFindSomethingWithTheWrongType() {
-//      var set = new HashTableSet();
-//      set.add(42);
-//      assertFalse(set.contains("foo"));
-//    }
-//
-//    @Test
-//    public void shouldNotFindAnIntegerBeforeAddingItButShouldFindItAfter() {
-//      var set = new HashTableSet();
-//      for (int i = 0; i < 100; i++) {
-//        assertFalse(set.contains(i));
-//        set.add(i);
-//        assertTrue(set.contains(i));
-//      }
-//    }
-//
-//    @Test
-//    public void shouldAddAndTestContainsForAnExtremalValue() {
-//      var set = new HashTableSet();
-//      assertFalse(set.contains(Integer.MIN_VALUE));
-//      set.add(Integer.MIN_VALUE);
-//      assertTrue(set.contains(Integer.MIN_VALUE));
-//      set.add(Integer.MAX_VALUE);
-//      assertTrue(set.contains(Integer.MAX_VALUE));
-//      assertEquals(2, set.size());
-//    }
-//
-//    @Test
-//    public void shouldContainsThrowAnErrorWithNull() {
-//      var set = new HashTableSet();
-//      assertThrows(NullPointerException.class, () -> set.contains(null));
-//    }
-//  }
-//
-//
-//  @Nested
-//  class Q5 {
-//
-//    @Test
-//    public void shouldBeAbleToAdd16Elements() {
-//      var set = new HashTableSet();
-//      IntStream.range(0, 16).forEach(set::add);
-//      var list = new ArrayList<>();
-//      set.forEach(list::add);
-//      list.sort(null);
-//      assertAll(
-//          () -> assertEquals(16, set.size()),
-//          () -> assertEquals(IntStream.range(0, 16).mapToObj(x -> x).toList(), list)
-//      );
-//    }
-//
-//    @Test
-//    public void shouldBeAbleToAdd17Elements() {
-//      var set = new HashTableSet();
-//      IntStream.range(0, 17).forEach(set::add);
-//      var list = new ArrayList<>();
-//      set.forEach(list::add);
-//      list.sort(null);
-//      assertAll(
-//          () -> assertEquals(17, set.size()),
-//          () -> assertEquals(IntStream.range(0, 17).mapToObj(x -> x).toList(), list)
-//      );
-//    }
-//
-//    @Test
-//    public void shouldRehashWorkProperlyWithContains() {
-//      var set = new HashTableSet();
-//      IntStream.range(21, 30).forEach(set::add);
-//      assertTrue(set.contains(26));
-//      assertTrue(set.contains(27));
-//    }
-//    
-//    @Test
-//    public void shouldRehashWorkProperlyWithgoutDuplicates() {
-//      var set = new HashTableSet();
-//      IntStream.range(0, 9).forEach(i -> set.add(i * 16));
-//      var list  = new ArrayList();
-//      set.forEach(list::add);
-//      assertEquals(9, list.size());
-//    }
-//
-//    @Test
-//    public void shouldFindItAfterAddingMany() {
-//      var set = new HashTableSet();
-//      for (int i = 0; i < 100; i++) {
-//        set.add(100 - i);
-//        assertTrue(set.contains(100 - i));
-//      }
-//      for (int i = 0; i < 100; i++) {
-//        assertTrue(set.contains(100 - i));
-//      }
-//    }
-//    
-//    @Test
-//    public void shouldNotFindAnIntegerBeforeAddingItButShouldFindItAfterALot() {
-//      var set = new HashTableSet();
-//      for (int i = 0; i < 1_000_000; i++) {
-//        assertFalse(set.contains(i));
-//        set.add(i);
-//        assertTrue(set.contains(i));
-//      }
-//    }
-//
-//    @Test
-//    public void shouldBeAbleToALotOfString() {
-//      var set = new HashTableSet();
-//      assertTimeoutPreemptively(Duration.ofMillis(1_000), () -> IntStream.range(0, 1_000_000).mapToObj(String::valueOf).forEach(set::add));
-//      assertEquals(1_000_000, set.size());
-//      IntStream.range(0, 1_000_000).forEach(set::contains);
-//    }
-//
-//    @Test
-//    public void shouldNotTakeTooLongToAddDifferentElementsMultipleTimes() {
-//      var set = new HashTableSet();
-//      assertTimeoutPreemptively(Duration.ofMillis(1_000), () -> IntStream.range(0, 1_000_000).map(i -> i / 2).forEach(set::add));
-//      assertEquals(1_000_000 / 2, set.size());
-//      IntStream.range(0, 1_000_000 / 2).forEach(set::contains);
-//    }
-//  }
-//
-//
+  @Nested
+  public class Q3 {
+
+    @Test
+    public void shouldDoNoThingWhenForEachCalledOnEmptySet() {
+      var set = new HashTableSet();
+      set.forEach(__ -> fail("should not be called"));
+    }
+
+    @Test
+    public void shouldComputeTheSumOfAllTheElementsInASetUsingForEachAngGetTheSameAsTheFormula() {
+      var length = 100;
+      var set = new HashTableSet();
+      IntStream.range(0, length).forEach(set::add);
+      var box = new Object() { int sum; };
+      set.forEach(element -> box.sum += (int) element);
+      assertEquals(length * (length - 1) / 2, box.sum);
+    }
+
+    @Test
+    public void shouldNotCountTheSameValueTwice() {
+      var set = new HashTableSet();
+      IntStream.range(0, 100).map(i -> i / 2).forEach(set::add);
+      assertEquals(50, set.size());
+    }
+
+    @Test
+    public void shouldAddAllTheElementsOfASetToAListUsingForEach() {
+      var set = new HashTableSet();
+      IntStream.range(0, 100).forEach(set::add);
+      var list = new ArrayList<>();
+      set.forEach(list::add);
+      list.sort(null);
+      IntStream.range(0, 100).forEach(i -> assertEquals(i, list.get(i)));
+    }
+
+    @Test
+    public void shouldNotUseNullAsAParameterForForEach() {
+      var set = new HashTableSet();
+      assertThrows(NullPointerException.class, () -> set.forEach(null));
+    }
+  }
+
+
+  @Nested
+  class Q4 {
+
+    @Test
+    public void shouldFindAPreviouslyInsertedValue() {
+      var set = new HashTableSet();
+      set.add("foo");
+      assertAll(
+          () -> assertTrue(set.contains("foo")),
+          () -> assertFalse(set.contains("bar"))
+      );
+    }
+
+    @Test
+    public void shouldNotFindAnythingContainedInAnEmptySet() {
+      var set = new HashTableSet();
+      assertFalse(set.contains(42));
+      assertFalse(set.contains("foo"));
+    }
+
+    @Test
+    public void shouldNotFindSomethingWithTheWrongType() {
+      var set = new HashTableSet();
+      set.add(42);
+      assertFalse(set.contains("foo"));
+    }
+
+    @Test
+    public void shouldNotFindAnIntegerBeforeAddingItButShouldFindItAfter() {
+      var set = new HashTableSet();
+      for (int i = 0; i < 100; i++) {
+        assertFalse(set.contains(i));
+        set.add(i);
+        assertTrue(set.contains(i));
+      }
+    }
+
+    @Test
+    public void shouldAddAndTestContainsForAnExtremalValue() {
+      var set = new HashTableSet();
+      assertFalse(set.contains(Integer.MIN_VALUE));
+      set.add(Integer.MIN_VALUE);
+      assertTrue(set.contains(Integer.MIN_VALUE));
+      set.add(Integer.MAX_VALUE);
+      assertTrue(set.contains(Integer.MAX_VALUE));
+      assertEquals(2, set.size());
+    }
+
+    @Test
+    public void shouldContainsThrowAnErrorWithNull() {
+      var set = new HashTableSet();
+      assertThrows(NullPointerException.class, () -> set.contains(null));
+    }
+  }
+
+
+  @Nested
+  class Q5 {
+
+    @Test
+    public void shouldBeAbleToAdd16Elements() {
+      var set = new HashTableSet();
+      IntStream.range(0, 16).forEach(set::add);
+      var list = new ArrayList<>();
+      set.forEach(list::add);
+      list.sort(null);
+      assertAll(
+          () -> assertEquals(16, set.size()),
+          () -> assertEquals(IntStream.range(0, 16).mapToObj(x -> x).toList(), list)
+      );
+    }
+
+    @Test
+    public void shouldBeAbleToAdd17Elements() {
+      var set = new HashTableSet();
+      IntStream.range(0, 17).forEach(set::add);
+      var list = new ArrayList<>();
+      set.forEach(list::add);
+      list.sort(null);
+      assertAll(
+          () -> assertEquals(17, set.size()),
+          () -> assertEquals(IntStream.range(0, 17).mapToObj(x -> x).toList(), list)
+      );
+    }
+
+    @Test
+    public void shouldRehashWorkProperlyWithContains() {
+      var set = new HashTableSet();
+      IntStream.range(21, 30).forEach(set::add);
+      assertTrue(set.contains(26));
+      assertTrue(set.contains(27));
+    }
+    
+    @Test
+    public void shouldRehashWorkProperlyWithgoutDuplicates() {
+      var set = new HashTableSet();
+      IntStream.range(0, 9).forEach(i -> set.add(i * 16));
+      var list  = new ArrayList();
+      set.forEach(list::add);
+      assertEquals(9, list.size());
+    }
+
+    @Test
+    public void shouldFindItAfterAddingMany() {
+      var set = new HashTableSet();
+      for (int i = 0; i < 100; i++) {
+        set.add(100 - i);
+        assertTrue(set.contains(100 - i));
+      }
+      for (int i = 0; i < 100; i++) {
+        assertTrue(set.contains(100 - i));
+      }
+    }
+    
+    @Test
+    public void shouldNotFindAnIntegerBeforeAddingItButShouldFindItAfterALot() {
+      var set = new HashTableSet();
+      for (int i = 0; i < 1_000_000; i++) {
+        assertFalse(set.contains(i));
+        set.add(i);
+        assertTrue(set.contains(i));
+      }
+    }
+
+    @Test
+    public void shouldBeAbleToALotOfString() {
+      var set = new HashTableSet();
+      assertTimeoutPreemptively(Duration.ofMillis(1_000), () -> IntStream.range(0, 1_000_000).mapToObj(String::valueOf).forEach(set::add));
+      assertEquals(1_000_000, set.size());
+      IntStream.range(0, 1_000_000).forEach(set::contains);
+    }
+
+    @Test
+    public void shouldNotTakeTooLongToAddDifferentElementsMultipleTimes() {
+      var set = new HashTableSet();
+      assertTimeoutPreemptively(Duration.ofMillis(1_000), () -> IntStream.range(0, 1_000_000).map(i -> i / 2).forEach(set::add));
+      assertEquals(1_000_000 / 2, set.size());
+      IntStream.range(0, 1_000_000 / 2).forEach(set::contains);
+    }
+  }
+
+
 //  @Nested
 //  class Q6 {
 //
