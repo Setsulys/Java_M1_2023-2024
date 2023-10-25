@@ -1,6 +1,5 @@
 package fr.uge.set;
 
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -23,15 +22,19 @@ public final class HashTableSet{
 		return value.hashCode() & (SIZE-1);
 	}
 	
-//	private Entry[] updateSize(Entry[] array) {
-//		if(size()>(SIZE/2)) {
-//			SIZE = SIZE*2;
-//			Entry[] array2 = new Entry[SIZE];
-//			Arrays.asList(array).forEach(e -> array2[Arrays.asList(array).indexOf(e)] = e);
-//			array = array2;
-//		}
-//		return array;
-//	}
+	private Entry[] updateSize(Entry[] array) {
+		if(size()>(SIZE/2)) {
+			SIZE = SIZE*2;
+			Entry[] array2 = new Entry[SIZE];
+			for(var i=0; i < SIZE/2	;i++) {
+				for (var element = array[i];element!=null;element = element.next()) {
+					array2[hackersDelight(element)] = new Entry(element.value(), array2[hackersDelight(element)]);
+				}
+			}
+			array = array2;
+		}
+		return array;
+	}
 
 	public  void add(Object value) {
 		Objects.requireNonNull(value);
@@ -42,7 +45,7 @@ public final class HashTableSet{
 			}
 		}
 		length++;
-		//array = updateSize(array);
+		array = updateSize(array);
 		array[hashvalue] = new Entry(value, array[hashvalue]);
 	}
 
@@ -55,7 +58,7 @@ public final class HashTableSet{
 		Objects.requireNonNull(function);
 		for(var i = 0; i < SIZE;i++) {
 			for(var element = array[i]; element != null; element = element.next()) {
-				function.accept( element.value());
+				function.accept(element.value());
 			}
 		}
 		//Arrays.stream(array).flatMap(element -> Stream.iterate(element,e -> e.next())).map(Entry::value).forEach(function::accept);
