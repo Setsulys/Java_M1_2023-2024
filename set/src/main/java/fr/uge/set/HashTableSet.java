@@ -3,17 +3,17 @@ package fr.uge.set;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-public final class HashTableSet{
+public final class HashTableSet<T>{
 
-	private record Entry(Object value,Entry next) {
+	private record Entry<T>(T value,Entry<T> next) {
 	}
 
-	private Entry[] array;
-	private static int SIZE;
+	private Entry<T>[] array;
+	private static int SIZE=16;
 	private int length;
 
+	@SuppressWarnings("unchecked")
 	public HashTableSet(){
-		SIZE = 16;
 		length = 0;
 		array = new Entry[SIZE];
 	}
@@ -21,32 +21,32 @@ public final class HashTableSet{
 	private int hackersDelight(Object value) {
 		return value.hashCode() & (SIZE-1);
 	}
-	
-	private Entry[] updateSize(Entry[] array) {
+
+	@SuppressWarnings("unchecked")
+	private Entry<T>[] updateSize(Entry<T>[] array) {
 		if(size()>(SIZE/2)) {
 			SIZE = SIZE*2;
-			Entry[] array2 = new Entry[SIZE];
+			Entry<T>[] array2 = new Entry[SIZE];
 			for(var i=0; i < SIZE/2	;i++) {
 				for (var element = array[i];element!=null;element = element.next()) {
-					array2[hackersDelight(element)] = new Entry(element.value(), array2[hackersDelight(element)]);
+					array2[hackersDelight(element)] = new Entry<T>(element.value(), array2[hackersDelight(element)]);
 				}
 			}
+			//			Consumer<Entry> cons = element -> array2[hackersDelight(element)] = new Entry(element.value(), array2[hackersDelight(element)]);
+			//			forEach(cons);
 			array = array2;
 		}
 		return array;
 	}
 
-	public  void add(Object value) {
+	public void add(T value) {
 		Objects.requireNonNull(value);
-		var hashvalue=hackersDelight(value);
-		for(Entry element=array[hashvalue];element!=null;element = element.next()){
-			if(element.value.equals(value)) {
-				return;
-			}
+		if(contains(value)) {
+			return;
 		}
-		length++;
 		array = updateSize(array);
-		array[hashvalue] = new Entry(value, array[hashvalue]);
+		length++;
+		array[hackersDelight(value)] = new Entry<T>(value, array[hackersDelight(value)]);
 	}
 
 
@@ -54,7 +54,7 @@ public final class HashTableSet{
 		return length;
 	}
 
-	public void forEach(Consumer<Object> function) {
+	public void forEach(Consumer<? super T> function) {
 		Objects.requireNonNull(function);
 		for(var i = 0; i < SIZE;i++) {
 			for(var element = array[i]; element != null; element = element.next()) {
@@ -64,14 +64,23 @@ public final class HashTableSet{
 		//Arrays.stream(array).flatMap(element -> Stream.iterate(element,e -> e.next())).map(Entry::value).forEach(function::accept);
 	}
 
-	public boolean contains(Object obj) {
-		Objects.requireNonNull(obj);
-		var hashvalue = hackersDelight(obj);
-		for(Entry element = array[hashvalue];element!= null;element = element.next()) {
-			if(obj.hashCode() == element.value().hashCode()) {
+	public boolean contains(Object value) {
+		Objects.requireNonNull(value);
+		var hashvalue = hackersDelight(value);
+		for(Entry<T> element = array[hashvalue];element!= null;element = element.next()) {
+			if(value.equals(element.value())) {
 				return true;
 			}
 		}
 		return false;
+	}
+	
+	public void addAll(HashTableSet<? extends T> table) {
+		Objects.requireNonNull(table);
+		for(var i=0; i< table.length;i++) {
+			for(var element = table.array[hackersDelight(i)]; element!=null;element.next()) {
+				this.add(element.value());
+			}
+		}
 	}
 }

@@ -360,106 +360,106 @@ public class HashTableSetTest {
   }
 
 
-//  @Nested
-//  class Q6 {
-//
-//    @Test
-//    public void shouldAddOne() {
-//      var set = new HashTableSet<Integer>();
-//      set.add(1);
-//      assertEquals(1, set.size());
-//    }
-//
-//    @Test
-//    public void shouldAddAString() {
-//      var set = new HashTableSet<String>();
-//      set.add("foo");
-//      assertEquals(1, set.size());
-//    }
-//
-//    @Test
-//    public void shouldForEachWithTheRightType() {
-//      var set = new HashTableSet<Integer>();
-//      set.add(1);
-//      set.forEach(element -> assertEquals(1, Math.min(element, 10)));
-//    }
-//
-//    @Test
-//    public void shouldForEachWithTheRightType2() {
-//      var set = new HashTableSet<String>();
-//      set.add("foo");
-//      set.add("five");
-//      set.add("fallout");
-//      set.forEach(element -> assertTrue(element.startsWith("f")));
-//    }
-//  }
-//
-//  @Nested
-//  class Q7 {
-//
-//    @Test
-//    public void shouldForEachWorkWithASupertype() {
-//      var set = new HashTableSet<Integer>();
-//      set.add(1);
-//      set.forEach((Object element) -> {
-//        assertEquals(1, element);
-//      });
-//    }
-//
-//    @Test
-//    public void shouldForEachWorkWithASupertype2() {
-//      var set = new HashTableSet<String>();
-//      set.add("foo");
-//      set.forEach((CharSequence element) -> {
-//        assertEquals("foo", element);
-//      });
-//    }
-//  }
-//
-//  @Nested
-//  class Q8 {
-//
-//    @Test
-//    public void shouldAddAllTheElementsWithNoDuplicate() {
-//      var set = new HashTableSet<Integer>();
-//      set.add(1_000);
-//      set.add(2_000);
-//      var set2 = new HashTableSet<Integer>();
-//      set2.add(2_000);
-//      set2.add(4_000);
-//
-//      set.addAll(set2);
-//
-//      var list = new ArrayList<Integer>();
-//      set.forEach(list::add);
-//      list.sort(null);
-//      assertEquals(List.of(1_000, 2_000, 4_000), list);
-//    }
-//
-//    @Test
-//    public void shouldAddAllTheElementsWithNoDuplicate2() {
-//      var set = new HashTableSet<Object>();
-//      set.add("foo");
-//      set.add(42);
-//      var set2 = new HashTableSet<Integer>();
-//      set2.add(201);
-//      set2.add(42);
-//
-//      set.addAll(set2);
-//
-//      var hashSet = new java.util.HashSet<>();
-//      set.forEach(hashSet::add);
-//      assertEquals(java.util.Set.of(42, 201, "foo"), hashSet);
-//    }
-//
-//    @Test
-//    public void shouldNotSupportAddAllWithNull() {
-//      var set = new HashTableSet<>();
-//      assertThrows(NullPointerException.class, () -> set.addAll(null));
-//    }
-//  }
-//
-//
+  @Nested
+  class Q6 {
+
+    @Test
+    public void shouldAddOne() {
+      var set = new HashTableSet<Integer>();
+      set.add(1);
+      assertEquals(1, set.size());
+    }
+
+    @Test
+    public void shouldAddAString() {
+      var set = new HashTableSet<String>();
+      set.add("foo");
+      assertEquals(1, set.size());
+    }
+
+    @Test
+    public void shouldForEachWithTheRightType() {
+      var set = new HashTableSet<Integer>();
+      set.add(1);
+      set.forEach(element -> assertEquals(1, Math.min(element, 10)));
+    }
+
+    @Test
+    public void shouldForEachWithTheRightType2() {
+      var set = new HashTableSet<String>();
+      set.add("foo");
+      set.add("five");
+      set.add("fallout");
+      set.forEach(element -> assertTrue(element.startsWith("f")));
+    }
+  }
+
+  @Nested
+  class Q7 {
+
+    @Test
+    public void shouldForEachWorkWithASupertype() {
+      var set = new HashTableSet<Integer>();
+      set.add(1);
+      set.forEach((Object element) -> {
+        assertEquals(1, element);
+      });
+    }
+
+    @Test
+    public void shouldForEachWorkWithASupertype2() {
+      var set = new HashTableSet<String>();
+      set.add("foo");
+      set.forEach((CharSequence element) -> {
+        assertEquals("foo", element);
+      });
+    }
+  }
+
+  @Nested
+  class Q8 {
+
+    @Test
+    public void shouldAddAllTheElementsWithNoDuplicate() {
+      var set = new HashTableSet<Integer>();
+      set.add(1_000);
+      set.add(2_000);
+      var set2 = new HashTableSet<Integer>();
+      set2.add(2_000);
+      set2.add(4_000);
+
+      set.addAll(set2);
+
+      var list = new ArrayList<Integer>();
+      set.forEach(list::add);
+      list.sort(null);
+      assertEquals(List.of(1_000, 2_000, 4_000), list);
+    }
+
+    @Test
+    public void shouldAddAllTheElementsWithNoDuplicate2() {
+      var set = new HashTableSet<Object>();
+      set.add("foo");
+      set.add(42);
+      var set2 = new HashTableSet<Integer>();
+      set2.add(201);
+      set2.add(42);
+
+      set.addAll(set2);
+
+      var hashSet = new java.util.HashSet<>();
+      set.forEach(hashSet::add);
+      assertEquals(java.util.Set.of(42, 201, "foo"), hashSet);
+    }
+
+    @Test
+    public void shouldNotSupportAddAllWithNull() {
+      var set = new HashTableSet<>();
+      assertThrows(NullPointerException.class, () -> set.addAll(null));
+    }
+  }
+
+
 //  @Nested
 //  class Q9 {
 //
