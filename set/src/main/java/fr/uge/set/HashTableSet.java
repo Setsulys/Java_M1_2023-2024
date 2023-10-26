@@ -75,10 +75,6 @@ public final class HashTableSet<T>{
 	
 	public void addAll(HashTableSet<? extends T> table) {
 		Objects.requireNonNull(table);
-		for(var i=0; i< table.length;i++) {
-			for(var entry = table.array[hackersDelight(i)]; entry!=null;entry.next()) {
-				this.add(entry.value());
-			}
-		}
+		table.forEach(t -> add(t));
 	}
 }

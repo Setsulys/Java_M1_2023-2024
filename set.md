@@ -225,5 +225,11 @@ public final class HashTableSet<T>{
 ```
 ### 8. On souhaite maintenant écrire une méthode addAll qui permet d'ajouter tous les éléments d'un HashTableSet dans le HashTableSet courant.<br>Note : les éléments du HashTableSet pris en paramètre peuvent être des sous-types du type du HashTableSet courant. Si vous ne savez pas comment déclarer un sous-type dans un type paramétré, vous pouvez regarder la méthode Collection.addAll() des API du JDK.
 ```java
-
+public final class HashTableSet<T>{
+	...
+	public void addAll(HashTableSet<? extends T> table) {
+		Objects.requireNonNull(table);
+		table.forEach(t -> add(t));
+	}
+}
 ```
