@@ -28,12 +28,10 @@ public final class HashTableSet<T>{
 			SIZE = SIZE*2;
 			Entry<T>[] array2 = new Entry[SIZE];
 			for(var i=0; i < SIZE/2	;i++) {
-				for (var element = array[i];element!=null;element = element.next()) {
-					array2[hackersDelight(element)] = new Entry<T>(element.value(), array2[hackersDelight(element)]);
+				for (var entry = array[i];entry!=null;entry = entry.next()) {
+					array2[hackersDelight(entry.value())] = new Entry<T>(entry.value(), array2[hackersDelight(entry.value())]);
 				}
 			}
-			//			Consumer<Entry> cons = element -> array2[hackersDelight(element)] = new Entry(element.value(), array2[hackersDelight(element)]);
-			//			forEach(cons);
 			array = array2;
 		}
 		return array;
@@ -57,8 +55,8 @@ public final class HashTableSet<T>{
 	public void forEach(Consumer<? super T> function) {
 		Objects.requireNonNull(function);
 		for(var i = 0; i < SIZE;i++) {
-			for(var element = array[i]; element != null; element = element.next()) {
-				function.accept(element.value());
+			for(var entry = array[i]; entry != null; entry = entry.next()) {
+				function.accept(entry.value());
 			}
 		}
 		//Arrays.stream(array).flatMap(element -> Stream.iterate(element,e -> e.next())).map(Entry::value).forEach(function::accept);
@@ -67,8 +65,8 @@ public final class HashTableSet<T>{
 	public boolean contains(Object value) {
 		Objects.requireNonNull(value);
 		var hashvalue = hackersDelight(value);
-		for(Entry<T> element = array[hashvalue];element!= null;element = element.next()) {
-			if(value.equals(element.value())) {
+		for(Entry<T> entry = array[hashvalue];entry!= null;entry = entry.next()) {
+			if(value.equals(entry.value())) {
 				return true;
 			}
 		}
@@ -78,8 +76,8 @@ public final class HashTableSet<T>{
 	public void addAll(HashTableSet<? extends T> table) {
 		Objects.requireNonNull(table);
 		for(var i=0; i< table.length;i++) {
-			for(var element = table.array[hackersDelight(i)]; element!=null;element.next()) {
-				this.add(element.value());
+			for(var entry = table.array[hackersDelight(i)]; entry!=null;entry.next()) {
+				this.add(entry.value());
 			}
 		}
 	}

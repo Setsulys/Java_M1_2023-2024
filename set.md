@@ -33,8 +33,8 @@ public class HashTableSet{
 	public  void add(Object value) {
 		Objects.requireNonNull(value);
 		var hashvalue=hackersDelight(value);
-		for(Entry element=array[hashvalue];element!=null;element = element.next()){
-			if(element.value.equals(value)) {
+		for(Entry entry=array[hashvalue];entry!=null;entry = entry.next()){
+			if(entry.value.equals(value)) {
 				return;
 			}
 		}
@@ -56,8 +56,8 @@ public class HashTableSet{
 	public void forEach(Consumer<Object> function) {
 		Objects.requireNonNull(function);
 		for(var i = 0; i < SIZE;i++) {
-			for(var element = array[i]; element != null; element = element.next()) {
-				function.accept( element.value());
+			for(var entry = array[i]; entry != null; entry = entry.next()) {
+				function.accept( entry.value());
 			}
 		}
 	}
@@ -72,8 +72,8 @@ public final class HashTableSet{
 	public void add(Object value) {
 		Objects.requireNonNull(value);
 		var hashvalue=hackersDelight(value);
-//		for(Entry element=array[hashvalue];element!=null;element = element.next()){
-//			if(element.value.equals(value)) {
+//		for(Entry entry=array[hashvalue];entry!=null;entry = entry.next()){
+//			if(entry.value.equals(value)) {
 //				return;
 //			}
 //		}
@@ -87,8 +87,8 @@ public final class HashTableSet{
 	public boolean contains(Object value) {
 		Objects.requireNonNull(value);
 		var hashvalue = hackersDelight(value);
-		for(Entry element = array[hashvalue];element!= null;element = element.next()) {
-			if(value.equals(element.value())) {
+		for(Entry entry = array[hashvalue];entry!= null;entry = entry.next()) {
+			if(value.equals(entry.value())) {
 				return true;
 			}
 		}
@@ -107,8 +107,8 @@ public final class HashTableSet{
 			SIZE = SIZE*2;
 			Entry[] array2 = new Entry[SIZE];
 			for(var i=0; i < SIZE/2	;i++) {
-				for (var element = array[i];element!=null;element = element.next()) {
-					array2[hackersDelight(element)] = new Entry(element.value(), array2[hackersDelight(element)]);
+				for (var entry = array[i];entry!=null;entry = entry.next()) {
+					array2[hackersDelight(entry.value())] = new Entry(entry.value(), array2[hackersDelight(entry.value())]);
 				}
 			}
 			array = array2;
@@ -156,11 +156,11 @@ public final class HashTableSet<T>{
 			SIZE = SIZE*2;
 			Entry<T>[] array2 = new Entry[SIZE];
 			for(var i=0; i < SIZE/2	;i++) {
-				for (var element = array[i];element!=null;element = element.next()) {
-					array2[hackersDelight(element)] = new Entry<T>(element.value(), array2[hackersDelight(element)]);
+				for (var entry = array[i];entry!=null;entry = entry.next()) {
+					array2[hackersDelight(entry.value())] = new Entry<T>(entry.value(), array2[hackersDelight(entry.value())]);
 				}
 			}
-			//			Consumer<Entry> cons = element -> array2[hackersDelight(element)] = new Entry(element.value(), array2[hackersDelight(element)]);
+			//			Consumer<Entry> cons = entry -> array2[hackersDelight(entry)] = new Entry(entry.value(), array2[hackersDelight(entry)]);
 			//			forEach(cons);
 			array = array2;
 		}
@@ -185,18 +185,18 @@ public final class HashTableSet<T>{
 	public void forEach(Consumer<E> function) {
 		Objects.requireNonNull(function);
 		for(var i = 0; i < SIZE;i++) {
-			for(var element = array[i]; element != null; element = element.next()) {
-				function.accept(element.value());
+			for(var entry = array[i]; entry != null; entry = entry.next()) {
+				function.accept(entry.value());
 			}
 		}
-		//Arrays.stream(array).flatMap(element -> Stream.iterate(element,e -> e.next())).map(Entry::value).forEach(function::accept);
+		//Arrays.stream(array).flatMap(entry -> Stream.iterate(entry,e -> e.next())).map(Entry::value).forEach(function::accept);
 	}
 
 	public boolean contains(Object value) {
 		Objects.requireNonNull(value);
 		var hashvalue = hackersDelight(value);
-		for(Entry<T> element = array[hashvalue];element!= null;element = element.next()) {
-			if(value.equals(element.value())) {
+		for(Entry<T> entry = array[hashvalue];entry!= null;entry = entry.next()) {
+			if(value.equals(entry.value())) {
 				return true;
 			}
 		}
@@ -214,11 +214,11 @@ public final class HashTableSet<T>{
 	public void forEach(Consumer<? super T> function) {
 		Objects.requireNonNull(function);
 		for(var i = 0; i < SIZE;i++) {
-			for(var element = array[i]; element != null; element = element.next()) {
-				function.accept(element.value());
+			for(var entry = array[i]; entry != null; entry = entry.next()) {
+				function.accept(entry.value());
 			}
 		}
-		//Arrays.stream(array).flatMap(element -> Stream.iterate(element,e -> e.next())).map(Entry::value).forEach(function::accept);
+		//Arrays.stream(array).flatMap(entry -> Stream.iterate(entry,e -> e.next())).map(Entry::value).forEach(function::accept);
 	}
 	...
 }
