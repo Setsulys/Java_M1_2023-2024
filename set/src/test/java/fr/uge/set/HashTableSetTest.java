@@ -460,92 +460,92 @@ public class HashTableSetTest {
   }
 
 
-//  @Nested
-//  class Q9 {
-//
-//    @Test
-//    public void shouldBeEqualsWhateverOfTheOrder() {
-//      var set = new HashTableSet<Integer>();
-//      set.add(1);
-//      set.add(17);
-//      var set2 = new HashTableSet<Integer>();
-//      set2.add(17);
-//      set2.add(1);
-//
-//      assertAll(
-//          () -> assertTrue(set.equals(set2)),
-//          () -> assertTrue(set2.equals(set))
-//      );
-//    }
-//
-//    @Test
-//    public void shouldBeDifferentEvenIfThereAreNotDisjoint() {
-//      var set = new HashTableSet<String>();
-//      set.add("foo");
-//      set.add("bar");
-//      set.add("baz");
-//      var set2 = new HashTableSet<String>();
-//      set2.add("foo");
-//      set2.add("bar");
-//      set2.add("whizz");
-//
-//      assertAll(
-//          () -> assertFalse(set.equals(set2)),
-//          () -> assertFalse(set2.equals(set))
-//      );
-//    }
-//
-//    @Test
-//    public void shouldWorkEvenWithSetNotOfTheSameType() {
-//      var set = new HashTableSet<Object>();
-//      set.add("foo");
-//      var set2 = new HashTableSet<String>();
-//      set2.add("foo");
-//
-//      assertAll(
-//          () -> assertTrue(set.equals(set2)),
-//          () -> assertTrue(set2.equals(set))
-//      );
-//    }
-//
-//    @Test
-//    public void shouldNotWorkIfSetDoNotHaveTheSameSize() {
-//      var set = new HashTableSet<Integer>();
-//      IntStream.range(0, 1_000_000).forEach(set::add);
-//      var set2 = new HashTableSet<Integer>();
-//      set2.add(0);
-//
-//      assertAll(
-//          () -> assertFalse(set.equals(set2)),
-//          () -> assertFalse(set2.equals(set))
-//      );
-//    }
-//
-//    @Test
-//    public void shouldEqualsHasTheCorrectPreconditions() {
-//      var set = new HashTableSet<String>();
-//      assertAll(
-//          () -> assertFalse(set.equals(null)),
-//          () -> assertFalse(set.equals("what"))
-//      );
-//    }
-//
-//    @Test
-//    public void shouldWorksWithSetOfSet() {
-//      var set = new HashTableSet<String>();
-//      set.add("hello");
-//      var setOfSet = new HashTableSet<HashTableSet<String>>();
-//      setOfSet.add(set);
-//
-//      var set2 = new HashTableSet<String>();
-//      set2.add("hello");
-//      var setOfSet2 = new HashTableSet<HashTableSet<String>>();
-//      setOfSet2.add(set2);
-//
-//      assertAll(
-//          () -> assertTrue(setOfSet.equals(setOfSet2)),
-//          () -> assertTrue(setOfSet2.equals(setOfSet))
-//      );
-//    }
-//  }
+  @Nested
+  class Q9 {
+
+    @Test
+    public void shouldBeEqualsWhateverOfTheOrder() {
+      var set = new HashTableSet<Integer>();
+      set.add(1);
+      set.add(17);
+      var set2 = new HashTableSet<Integer>();
+      set2.add(17);
+      set2.add(1);
+
+      assertAll(
+          () -> assertTrue(set.equals(set2)),
+          () -> assertTrue(set2.equals(set))
+      );
+    }
+
+    @Test
+    public void shouldBeDifferentEvenIfThereAreNotDisjoint() {
+      var set = new HashTableSet<String>();
+      set.add("foo");
+      set.add("bar");
+      set.add("baz");
+      var set2 = new HashTableSet<String>();
+      set2.add("foo");
+      set2.add("bar");
+      set2.add("whizz");
+
+      assertAll(
+          () -> assertFalse(set.equals(set2)),
+          () -> assertFalse(set2.equals(set))
+      );
+    }
+
+    @Test
+    public void shouldWorkEvenWithSetNotOfTheSameType() {
+      var set = new HashTableSet<Object>();
+      set.add("foo");
+      var set2 = new HashTableSet<String>();
+      set2.add("foo");
+
+      assertAll(
+          () -> assertTrue(set.equals(set2)),
+          () -> assertTrue(set2.equals(set))
+      );
+    }
+
+    @Test
+    public void shouldNotWorkIfSetDoNotHaveTheSameSize() {
+      var set = new HashTableSet<Integer>();
+      IntStream.range(0, 1_000_000).forEach(set::add);
+      var set2 = new HashTableSet<Integer>();
+      set2.add(0);
+
+      assertAll(
+          () -> assertFalse(set.equals(set2)),
+          () -> assertFalse(set2.equals(set))
+      );
+    }
+
+    @Test
+    public void shouldEqualsHasTheCorrectPreconditions() {
+      var set = new HashTableSet<String>();
+      assertAll(
+          () -> assertFalse(set.equals(null)),
+          () -> assertFalse(set.equals("what"))
+      );
+    }
+
+    @Test
+    public void shouldWorksWithSetOfSet() {
+      var set = new HashTableSet<String>();
+      set.add("hello");
+      var setOfSet = new HashTableSet<HashTableSet<String>>();
+      setOfSet.add(set);
+
+      var set2 = new HashTableSet<String>();
+      set2.add("hello");
+      var setOfSet2 = new HashTableSet<HashTableSet<String>>();
+      setOfSet2.add(set2);
+
+      assertAll(
+          () -> assertTrue(setOfSet.equals(setOfSet2)),
+          () -> assertTrue(setOfSet2.equals(setOfSet))
+      );
+    }
+  }
 }

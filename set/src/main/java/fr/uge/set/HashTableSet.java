@@ -1,5 +1,6 @@
 package fr.uge.set;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -62,7 +63,7 @@ public final class HashTableSet<T>{
 		//Arrays.stream(array).flatMap(element -> Stream.iterate(element,e -> e.next())).map(Entry::value).forEach(function::accept);
 	}
 
-	public boolean contains(Object value) {
+	public boolean contains(T value) {
 		Objects.requireNonNull(value);
 		var hashvalue = hackersDelight(value);
 		for(Entry<T> entry = array[hashvalue];entry!= null;entry = entry.next()) {
@@ -76,5 +77,12 @@ public final class HashTableSet<T>{
 	public void addAll(HashTableSet<? extends T> table) {
 		Objects.requireNonNull(table);
 		table.forEach(t -> add(t));
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		return o instanceof HashTableSet<?> hashTableSet 
+				&& this==hashTableSet
+				&& this.array ==hashTableSet.array;
 	}
 }
