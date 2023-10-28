@@ -63,7 +63,7 @@ public final class HashTableSet<T>{
 		//Arrays.stream(array).flatMap(element -> Stream.iterate(element,e -> e.next())).map(Entry::value).forEach(function::accept);
 	}
 
-	public boolean contains(T value) {
+	public boolean contains(Object value) {
 		Objects.requireNonNull(value);
 		var hashvalue = hackersDelight(value);
 		for(Entry<T> entry = array[hashvalue];entry!= null;entry = entry.next()) {

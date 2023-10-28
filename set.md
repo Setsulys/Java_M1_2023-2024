@@ -1,4 +1,4 @@
-# LY STEVEN TP4 STEVEN
+# LY STEVEN TP4
 
 ## Exercice 2 - HashTableSet
 
