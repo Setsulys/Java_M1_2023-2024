@@ -131,18 +131,13 @@ public class Fifo<E> {
 	...
 	@Override
 	public String toString() {
-		String s;
-		if(size()==0) {
-			return s = "[]";
+		var stringJoiner= new StringJoiner(", ","[","]");
+		var j= head;
+		for(var i= 0; i< size();i++) {
+			stringJoiner.add(array[j].toString());
+			j=(j+1)%array.length;
 		}
-		else if(head < tail) { 
-			s = Arrays.stream(array).filter(e -> e != null).map(String::valueOf).collect(Collectors.joining(", ","[","]"));
-		}
-		else{
-			s = Arrays.stream(array,head,array.length).filter(e -> e != null).map(String::valueOf).collect(Collectors.joining(", ","[",""));
-			s+= Arrays.stream(array,0,tail).filter(e -> e != null).map(String::valueOf).collect(Collectors.joining(", ",", ","]"));
-		}
-		return s;
+		return stringJoiner.toString();
 	}
 }
 
@@ -179,7 +174,7 @@ public class Fifo<E> {
 	}
 }
 ```
-un iterateur permet aux fonctions de pouvoir parcourir la classe, le type de retour de la méthode ``iterator()`` doit etre un ``Iterator<E>``
+un iterateur permet aux fonctions de pouvoir parcourir le tableau de la classe, le type de retour de la méthode ``iterator()`` doit etre un ``Iterator<E>``
 
 ### 9. On souhaite que le tableau circulaire soit parcourable en utilisant une boucle for-each-in, comme ceci :
 >```java 

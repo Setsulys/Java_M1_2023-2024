@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
 public class Fifo<E> extends AbstractQueue<E> implements Iterable<E>{
@@ -82,18 +83,13 @@ public class Fifo<E> extends AbstractQueue<E> implements Iterable<E>{
 
 	@Override
 	public String toString() {
-		String s;
-		if(size()==0) {
-			return s = "[]";
+		var stringJoiner= new StringJoiner(", ","[","]");
+		var j= head;
+		for(var i= 0; i< size();i++) {
+			stringJoiner.add(array[j].toString());
+			j=(j+1)%array.length;
 		}
-		else if(head < tail) { 
-			s = Arrays.stream(array).filter(e -> e != null).map(String::valueOf).collect(Collectors.joining(", ","[","]"));
-		}
-		else{
-			s = Arrays.stream(array,head,array.length).filter(e -> e != null).map(String::valueOf).collect(Collectors.joining(", ","[",""));
-			s+= Arrays.stream(array,0,tail).filter(e -> e != null).map(String::valueOf).collect(Collectors.joining(", ",", ","]"));
-		}
-		return s;
+		return stringJoiner.toString();
 	}
 
 	public Iterator<E> iterator() {
