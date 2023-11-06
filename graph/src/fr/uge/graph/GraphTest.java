@@ -333,320 +333,320 @@ public class GraphTest {
   }
 
 
-//  @Nested
-//  public class Q5 {
-//    @Test
-//    public void mergeAllIsNotAbstract() {
-//      assertTrue(Arrays.stream(Graph.class.getMethods())
-//          .filter(m -> m.getName().equals("mergeAll"))
-//          .noneMatch(m -> m.accessFlags().contains(AccessFlag.ABSTRACT)));
-//    }
-//  }
-//
-//  @Nested
-//  public class Q6 {
-//
-//    @ParameterizedTest
-//    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
-//    public void neighborsSimple(GraphFactory factory) {
-//      var graph = factory.<Integer>createGraph(6);
-//      graph.addEdge(1, 2, 222);
-//      graph.addEdge(1, 5, 555);
-//
-//      var iterator = graph.neighborIterator(1);
-//      assertEquals(2, (int) iterator.next());
-//      assertEquals(5, (int) iterator.next());
-//      assertThrows(NoSuchElementException.class, iterator::next);
-//    }
-//
-//    @ParameterizedTest
-//    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
-//    public void neighborsSignature(GraphFactory factory) {
-//      Graph<Double> graph1 = factory.<Double>createGraph(6);
-//      graph1.addEdge(1, 2, 3.0);
-//      Iterator<Integer> iterator1 = graph1.neighborIterator(1);
-//      assertEquals(2, iterator1.next());
-//
-//      Graph<String> graph2 = factory.<String>createGraph(6);
-//      graph2.addEdge(1, 3, "graph");
-//      Iterator<Integer> iterator2 = graph2.neighborIterator(1);
-//      assertEquals(3, iterator2.next());
-//    }
-//
-//    @ParameterizedTest
-//    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
-//    public void neighborsEmptyHasNext(GraphFactory factory) {
-//      var graph = factory.createGraph(6);
-//      var iterator = graph.neighborIterator(0);
-//      assertFalse(iterator.hasNext());
-//      assertFalse(iterator.hasNext());
-//      assertFalse(iterator.hasNext());
-//    }
-//
-//    @ParameterizedTest
-//    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
-//    public void neighborsOutOfRange(GraphFactory factory) {
-//      var graph = factory.<Integer>createGraph(6);
-//      assertAll(
-//          () -> assertThrows(IndexOutOfBoundsException.class, () -> graph.neighborIterator(10)),
-//          () -> assertThrows(IndexOutOfBoundsException.class, () -> graph.neighborIterator(-2))
-//      );
-//    }
-//
-//    @ParameterizedTest
-//    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
-//    public void neighborsEmptyNext(GraphFactory factory) {
-//      var graph = factory.createGraph(6);
-//      assertThrows(NoSuchElementException.class, () -> graph.neighborIterator(0).next());
-//    }
-//
-//    @ParameterizedTest
-//    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
-//    public void neighborsOneEdge(GraphFactory factory) {
-//      var graph = factory.<String>createGraph(6);
-//      graph.addEdge(1, 2, "hello");
-//      var iterator = graph.neighborIterator(1);
-//      assertTrue(iterator.hasNext());
-//      assertEquals(2, (int) iterator.next());
-//      assertFalse(iterator.hasNext());
-//      assertThrows(NoSuchElementException.class, iterator::next);
-//    }
-//
-//    @ParameterizedTest
-//    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
-//    public void neighborsNoHasNext(GraphFactory factory) {
-//      var graph = factory.createGraph(10);
-//      for (int i = 0; i < 10; i++) {
-//        graph.addEdge(5, i, -1);
-//      }
-//
-//      var result = new HashSet<Integer>();
-//      var expected = new HashSet<Integer>();
-//      var iterator = graph.neighborIterator(5);
-//      for (int i = 0; i < 10; i++) {
-//        expected.add(i);
-//        result.add(iterator.next());
-//      }
-//      assertEquals(expected, result);
-//
-//      assertFalse(iterator.hasNext());
-//      assertThrows(NoSuchElementException.class, iterator::next);
-//    }
-//
-//    @ParameterizedTest
-//    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
-//    public void neighborsNonDestructive(GraphFactory factory) {
-//      var graph = factory.createGraph(12);
-//      for (int i = 0; i < 12; i++) {
-//        graph.addEdge(5, i, 67);
-//      }
-//      assertTimeout(Duration.ofMillis(1_000), () -> {
-//        var neighbors = graph.neighborIterator(5);
-//        while (neighbors.hasNext()) {
-//          assertNotNull(neighbors.next());
-//        }
-//      });
-//      for (int i = 0; i < 12; i++) {
-//        assertEquals(67, (int) graph.getWeight(5, i).orElseThrow());
-//      }
-//    }
-//
-//    @ParameterizedTest
-//    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
-//    public void neighborSeveralHasNext(GraphFactory factory) {
-//      var graph = factory.createGraph(14);
-//      graph.addEdge(3, 7, 2);
-//      graph.addEdge(3, 5, 3);
-//      graph.addEdge(7, 3, 4);
-//
-//      assertTimeout(Duration.ofMillis(1_000), () -> {
-//        var neighbors = graph.neighborIterator(3);
-//        assertTrue(neighbors.hasNext());
-//        var node1 = neighbors.next();
-//        for (var i = 0; i < 5; i++) {
-//          assertTrue(neighbors.hasNext());
-//        }
-//        var node2 = neighbors.next();
-//        assertFalse(neighbors.hasNext());
-//        assertTrue((node1 == 5 && node2 == 7) || (node1 == 7 && node2 == 5));
-//      });
-//    }
-//
-//    @Test
-//    public void neighborImplementationIsLazy() {
-//      var graph = new MatrixGraph<>(3);
-//      var iterator = graph.neighborIterator(0);
-//      var packageName = iterator.getClass().getPackageName();
-//      assertAll(
-//          () -> assertNotEquals("java.util", packageName),
-//          () -> assertNotEquals("java.util.stream", packageName)
-//      );
-//    }
-//  }
-//
-//
-//  @Nested
-//  public class Q7 {
-//
-//    @ParameterizedTest
-//    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
-//    public void iteratorRemove(GraphFactory factory) {
-//      var graph = factory.createGraph(11);
-//      graph.addEdge(3, 10, 13);
-//      var neighbors = graph.neighborIterator(3);
-//      assertEquals(10, (int) neighbors.next());
-//      neighbors.remove();
-//      assertFalse(graph.getWeight(3, 10).isPresent());
-//    }
-//
-//    @ParameterizedTest
-//    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
-//    public void iteratorRemoveInvalid(GraphFactory factory) {
-//      var graph = factory.createGraph(21);
-//      graph.addEdge(20, 19, 20);
-//      var neighbors = graph.neighborIterator(20);
-//      assertThrows(IllegalStateException.class, neighbors::remove);
-//    }
-//
-//    @ParameterizedTest
-//    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
-//    public void iteratorRemoveTwiceInvalid(GraphFactory factory) {
-//      var graph = factory.createGraph(21);
-//      graph.addEdge(20, 19, 20);
-//      var neighbors = graph.neighborIterator(20);
-//      neighbors.next();
-//      neighbors.remove();
-//      assertFalse(graph.getWeight(20, 19).isPresent());
-//      assertThrows(IllegalStateException.class, neighbors::remove);
-//    }
-//
-//    @ParameterizedTest
-//    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
-//    public void iteratorRemoveALot(GraphFactory factory) {
-//      var graph = factory.createGraph(50);
-//      for (var i = 0; i < 50; i++) {
-//        for (var j = 0; j < i; j++) {
-//          graph.addEdge(i, j, i + j);
-//        }
-//      }
-//
-//      for (int i = 0; i < 50; i++) {
-//        var neighbors = graph.neighborIterator(i);
-//        for (var j = 0; j < i; j++) {
-//          assertTrue(neighbors.hasNext());
-//          neighbors.next();
-//          neighbors.remove();
-//        }
-//        assertFalse(neighbors.hasNext());
-//      }
-//
-//      for (var i = 0; i < 50; i++) {
-//        for (var j = 0; j < 50; j++) {
-//          assertTrue(graph.getWeight(i, j).isEmpty());
-//        }
-//      }
-//    }
-//  }
-//
-//
-//  @Nested
-//  public class Q8 {
-//    @Test
-//    public void edgeOfInteger() {
-//      Graph.Edge<Integer> edge = new Graph.Edge<Integer>(1, 2, 42);
-//      assertAll(
-//          () -> assertEquals(1, edge.src()),
-//          () -> assertEquals(2, edge.dst()),
-//          () -> assertEquals(42, edge.weight())
-//      );
-//    }
-//
-//    @Test
-//    public void edgeOfString() {
-//      Graph.Edge<String> edge = new Graph.Edge<String>(7, 4, "foo");
-//      assertAll(
-//          () -> assertEquals(7, edge.src()),
-//          () -> assertEquals(4, edge.dst()),
-//          () -> assertEquals("foo", edge.weight())
-//      );
-//    }
-//
-//    @Test
-//    public void edgePreconditions() {
-//      assertAll(
-//          () -> assertThrows(NullPointerException.class, () -> new Graph.Edge<>(1, 2, null)),
-//          () -> assertThrows(IllegalArgumentException.class, () -> new Graph.Edge<>(-1, 2, 10)),
-//          () -> assertThrows(IllegalArgumentException.class, () -> new Graph.Edge<>(1, -2, 10))
-//      );
-//    }
-//
-//    @ParameterizedTest
-//    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
-//    public void forEachEdgeStrings(GraphFactory factory) {
-//      var graph = factory.<String>createGraph(12);
-//      graph.addEdge(2, 5, "foo");
-//      graph.addEdge(2, 9, "bar");
-//
-//      var edges = new ArrayList<Graph.Edge<String>>();
-//      graph.forEachEdge(2, edges::add);
-//      assertEquals(List.of(
-//          new Graph.Edge<>(2, 5, "foo"),
-//          new Graph.Edge<>(2, 9, "bar")
-//      ), edges);
-//    }
-//
-//    @ParameterizedTest
-//    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
-//    public void forEachEdgeIntegers(GraphFactory factory) {
-//      var graph = factory.<Integer>createGraph(12);
-//      graph.addEdge(4, 1, 2);
-//      graph.addEdge(4, 7, 3);
-//      graph.addEdge(4, 10, 4);
-//
-//      var edges = new ArrayList<Graph.Edge<Integer>>();
-//      graph.forEachEdge(4, edges::add);
-//      assertEquals(List.of(
-//          new Graph.Edge<>(4, 1, 2),
-//          new Graph.Edge<>(4, 7, 3),
-//          new Graph.Edge<>(4, 10, 4)
-//      ), edges);
-//    }
-//
-//    @ParameterizedTest
-//    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
-//    public void forEachEdgeEmpty(GraphFactory factory) {
-//      var graph = factory.createGraph(3);
-//      graph.forEachEdge(0, edge -> fail());
-//    }
-//
-//    @Test
-//    public void forEachEdgeIsNotAbstract() {
-//      assertTrue(Arrays.stream(Graph.class.getMethods())
-//          .filter(m -> m.getName().equals("forEachEdge"))
-//          .noneMatch(m -> m.accessFlags().contains(AccessFlag.ABSTRACT)));
-//    }
-//
-//    @ParameterizedTest
-//    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
-//    public void forEachEdgeSignature(GraphFactory factory) {
-//      var graph = factory.createGraph(1);
-//      graph.forEachEdge(0, (Record edge) -> fail());
-//      graph.forEachEdge(0, (Object edge) -> fail());
-//    }
-//
-//    @ParameterizedTest
-//    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
-//    public void forEachEdgePreconditions(GraphFactory factory) {
-//      var graph = factory.createGraph(1);
-//      assertAll(
-//          () -> assertThrows(NullPointerException.class, () -> graph.forEachEdge(0, null)),
-//          () -> assertThrows(IndexOutOfBoundsException.class, () -> graph.forEachEdge(-1, edge -> {})),
-//          () -> assertThrows(IndexOutOfBoundsException.class, () -> graph.forEachEdge(1, edge -> {}))
-//      );
-//    }
-//  }
-//
-//
+  @Nested
+  public class Q5 {
+    @Test
+    public void mergeAllIsNotAbstract() {
+      assertTrue(Arrays.stream(Graph.class.getMethods())
+          .filter(m -> m.getName().equals("mergeAll"))
+          .noneMatch(m -> m.accessFlags().contains(AccessFlag.ABSTRACT)));
+    }
+  }
+
+  @Nested
+  public class Q6 {
+
+    @ParameterizedTest
+    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
+    public void neighborsSimple(GraphFactory factory) {
+      var graph = factory.<Integer>createGraph(6);
+      graph.addEdge(1, 2, 222);
+      graph.addEdge(1, 5, 555);
+
+      var iterator = graph.neighborIterator(1);
+      assertEquals(2, (int) iterator.next());
+      assertEquals(5, (int) iterator.next());
+      assertThrows(NoSuchElementException.class, iterator::next);
+    }
+
+    @ParameterizedTest
+    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
+    public void neighborsSignature(GraphFactory factory) {
+      Graph<Double> graph1 = factory.<Double>createGraph(6);
+      graph1.addEdge(1, 2, 3.0);
+      Iterator<Integer> iterator1 = graph1.neighborIterator(1);
+      assertEquals(2, iterator1.next());
+
+      Graph<String> graph2 = factory.<String>createGraph(6);
+      graph2.addEdge(1, 3, "graph");
+      Iterator<Integer> iterator2 = graph2.neighborIterator(1);
+      assertEquals(3, iterator2.next());
+    }
+
+    @ParameterizedTest
+    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
+    public void neighborsEmptyHasNext(GraphFactory factory) {
+      var graph = factory.createGraph(6);
+      var iterator = graph.neighborIterator(0);
+      assertFalse(iterator.hasNext());
+      assertFalse(iterator.hasNext());
+      assertFalse(iterator.hasNext());
+    }
+
+    @ParameterizedTest
+    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
+    public void neighborsOutOfRange(GraphFactory factory) {
+      var graph = factory.<Integer>createGraph(6);
+      assertAll(
+          () -> assertThrows(IndexOutOfBoundsException.class, () -> graph.neighborIterator(10)),
+          () -> assertThrows(IndexOutOfBoundsException.class, () -> graph.neighborIterator(-2))
+      );
+    }
+
+    @ParameterizedTest
+    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
+    public void neighborsEmptyNext(GraphFactory factory) {
+      var graph = factory.createGraph(6);
+      assertThrows(NoSuchElementException.class, () -> graph.neighborIterator(0).next());
+    }
+
+    @ParameterizedTest
+    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
+    public void neighborsOneEdge(GraphFactory factory) {
+      var graph = factory.<String>createGraph(6);
+      graph.addEdge(1, 2, "hello");
+      var iterator = graph.neighborIterator(1);
+      assertTrue(iterator.hasNext());
+      assertEquals(2, (int) iterator.next());
+      assertFalse(iterator.hasNext());
+      assertThrows(NoSuchElementException.class, iterator::next);
+    }
+
+    @ParameterizedTest
+    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
+    public void neighborsNoHasNext(GraphFactory factory) {
+      var graph = factory.createGraph(10);
+      for (int i = 0; i < 10; i++) {
+        graph.addEdge(5, i, -1);
+      }
+
+      var result = new HashSet<Integer>();
+      var expected = new HashSet<Integer>();
+      var iterator = graph.neighborIterator(5);
+      for (int i = 0; i < 10; i++) {
+        expected.add(i);
+        result.add(iterator.next());
+      }
+      assertEquals(expected, result);
+
+      assertFalse(iterator.hasNext());
+      assertThrows(NoSuchElementException.class, iterator::next);
+    }
+
+    @ParameterizedTest
+    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
+    public void neighborsNonDestructive(GraphFactory factory) {
+      var graph = factory.createGraph(12);
+      for (int i = 0; i < 12; i++) {
+        graph.addEdge(5, i, 67);
+      }
+      assertTimeout(Duration.ofMillis(1_000), () -> {
+        var neighbors = graph.neighborIterator(5);
+        while (neighbors.hasNext()) {
+          assertNotNull(neighbors.next());
+        }
+      });
+      for (int i = 0; i < 12; i++) {
+        assertEquals(67, (int) graph.getWeight(5, i).orElseThrow());
+      }
+    }
+
+    @ParameterizedTest
+    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
+    public void neighborSeveralHasNext(GraphFactory factory) {
+      var graph = factory.createGraph(14);
+      graph.addEdge(3, 7, 2);
+      graph.addEdge(3, 5, 3);
+      graph.addEdge(7, 3, 4);
+
+      assertTimeout(Duration.ofMillis(1_000), () -> {
+        var neighbors = graph.neighborIterator(3);
+        assertTrue(neighbors.hasNext());
+        var node1 = neighbors.next();
+        for (var i = 0; i < 5; i++) {
+          assertTrue(neighbors.hasNext());
+        }
+        var node2 = neighbors.next();
+        assertFalse(neighbors.hasNext());
+        assertTrue((node1 == 5 && node2 == 7) || (node1 == 7 && node2 == 5));
+      });
+    }
+
+    @Test
+    public void neighborImplementationIsLazy() {
+      var graph = new MatrixGraph<>(3);
+      var iterator = graph.neighborIterator(0);
+      var packageName = iterator.getClass().getPackageName();
+      assertAll(
+          () -> assertNotEquals("java.util", packageName),
+          () -> assertNotEquals("java.util.stream", packageName)
+      );
+    }
+  }
+
+
+  @Nested
+  public class Q7 {
+
+    @ParameterizedTest
+    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
+    public void iteratorRemove(GraphFactory factory) {
+      var graph = factory.createGraph(11);
+      graph.addEdge(3, 10, 13);
+      var neighbors = graph.neighborIterator(3);
+      assertEquals(10, (int) neighbors.next());
+      neighbors.remove();
+      assertFalse(graph.getWeight(3, 10).isPresent());
+    }
+
+    @ParameterizedTest
+    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
+    public void iteratorRemoveInvalid(GraphFactory factory) {
+      var graph = factory.createGraph(21);
+      graph.addEdge(20, 19, 20);
+      var neighbors = graph.neighborIterator(20);
+      assertThrows(IllegalStateException.class, neighbors::remove);
+    }
+
+    @ParameterizedTest
+    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
+    public void iteratorRemoveTwiceInvalid(GraphFactory factory) {
+      var graph = factory.createGraph(21);
+      graph.addEdge(20, 19, 20);
+      var neighbors = graph.neighborIterator(20);
+      neighbors.next();
+      neighbors.remove();
+      assertFalse(graph.getWeight(20, 19).isPresent());
+      assertThrows(IllegalStateException.class, neighbors::remove);
+    }
+
+    @ParameterizedTest
+    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
+    public void iteratorRemoveALot(GraphFactory factory) {
+      var graph = factory.createGraph(50);
+      for (var i = 0; i < 50; i++) {
+        for (var j = 0; j < i; j++) {
+          graph.addEdge(i, j, i + j);
+        }
+      }
+
+      for (int i = 0; i < 50; i++) {
+        var neighbors = graph.neighborIterator(i);
+        for (var j = 0; j < i; j++) {
+          assertTrue(neighbors.hasNext());
+          neighbors.next();
+          neighbors.remove();
+        }
+        assertFalse(neighbors.hasNext());
+      }
+
+      for (var i = 0; i < 50; i++) {
+        for (var j = 0; j < 50; j++) {
+          assertTrue(graph.getWeight(i, j).isEmpty());
+        }
+      }
+    }
+  }
+
+
+  @Nested
+  public class Q8 {
+    @Test
+    public void edgeOfInteger() {
+      Graph.Edge<Integer> edge = new Graph.Edge<Integer>(1, 2, 42);
+      assertAll(
+          () -> assertEquals(1, edge.src()),
+          () -> assertEquals(2, edge.dst()),
+          () -> assertEquals(42, edge.weight())
+      );
+    }
+
+    @Test
+    public void edgeOfString() {
+      Graph.Edge<String> edge = new Graph.Edge<String>(7, 4, "foo");
+      assertAll(
+          () -> assertEquals(7, edge.src()),
+          () -> assertEquals(4, edge.dst()),
+          () -> assertEquals("foo", edge.weight())
+      );
+    }
+
+    @Test
+    public void edgePreconditions() {
+      assertAll(
+          () -> assertThrows(NullPointerException.class, () -> new Graph.Edge<>(1, 2, null)),
+          () -> assertThrows(IllegalArgumentException.class, () -> new Graph.Edge<>(-1, 2, 10)),
+          () -> assertThrows(IllegalArgumentException.class, () -> new Graph.Edge<>(1, -2, 10))
+      );
+    }
+
+    @ParameterizedTest
+    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
+    public void forEachEdgeStrings(GraphFactory factory) {
+      var graph = factory.<String>createGraph(12);
+      graph.addEdge(2, 5, "foo");
+      graph.addEdge(2, 9, "bar");
+
+      var edges = new ArrayList<Graph.Edge<String>>();
+      graph.forEachEdge(2, edges::add);
+      assertEquals(List.of(
+          new Graph.Edge<>(2, 5, "foo"),
+          new Graph.Edge<>(2, 9, "bar")
+      ), edges);
+    }
+
+    @ParameterizedTest
+    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
+    public void forEachEdgeIntegers(GraphFactory factory) {
+      var graph = factory.<Integer>createGraph(12);
+      graph.addEdge(4, 1, 2);
+      graph.addEdge(4, 7, 3);
+      graph.addEdge(4, 10, 4);
+
+      var edges = new ArrayList<Graph.Edge<Integer>>();
+      graph.forEachEdge(4, edges::add);
+      assertEquals(List.of(
+          new Graph.Edge<>(4, 1, 2),
+          new Graph.Edge<>(4, 7, 3),
+          new Graph.Edge<>(4, 10, 4)
+      ), edges);
+    }
+
+    @ParameterizedTest
+    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
+    public void forEachEdgeEmpty(GraphFactory factory) {
+      var graph = factory.createGraph(3);
+      graph.forEachEdge(0, edge -> fail());
+    }
+
+    @Test
+    public void forEachEdgeIsNotAbstract() {
+      assertTrue(Arrays.stream(Graph.class.getMethods())
+          .filter(m -> m.getName().equals("forEachEdge"))
+          .noneMatch(m -> m.accessFlags().contains(AccessFlag.ABSTRACT)));
+    }
+
+    @ParameterizedTest
+    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
+    public void forEachEdgeSignature(GraphFactory factory) {
+      var graph = factory.createGraph(1);
+      graph.forEachEdge(0, (Record edge) -> fail());
+      graph.forEachEdge(0, (Object edge) -> fail());
+    }
+
+    @ParameterizedTest
+    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
+    public void forEachEdgePreconditions(GraphFactory factory) {
+      var graph = factory.createGraph(1);
+      assertAll(
+          () -> assertThrows(NullPointerException.class, () -> graph.forEachEdge(0, null)),
+          () -> assertThrows(IndexOutOfBoundsException.class, () -> graph.forEachEdge(-1, edge -> {})),
+          () -> assertThrows(IndexOutOfBoundsException.class, () -> graph.forEachEdge(1, edge -> {}))
+      );
+    }
+  }
+
+
 //  @Nested
 //  public class Q9 {
 //    @ParameterizedTest

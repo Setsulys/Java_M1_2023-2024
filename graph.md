@@ -51,14 +51,14 @@ final class MatrixGraph<T> implements Graph<T> {
     ...
 	public void addEdge(int src, int dst, T weight) {
 		Objects.requireNonNull(weight);
-		Objects.checkIndex(src, nodeCount);
-		Objects.checkIndex(dst, nodeCount);
+		Objects.checkIndex(src, nodeCount());
+		Objects.checkIndex(dst, nodeCount());
 		this.array[src*nodeCount+dst]=weight;
 	}
 	
 	public Optional<T> getWeight(int src, int dst){
-		Objects.checkIndex(src, nodeCount);
-		Objects.checkIndex(dst, nodeCount);
+		Objects.checkIndex(src, nodeCount());
+		Objects.checkIndex(dst, nodeCount());
 		return Optional.ofNullable(array[src*nodeCount+dst]);
 	}
 }
@@ -78,16 +78,28 @@ La classe ``java.util.Optional`` nous permet de renvoyer une valeur ou rien
 ```java
 final class MatrixGraph<T> implements Graph<T> {
     ...
-    public void mergeAll(Graph<? extends T> graph, BinaryOperator<T> merger){
-        Objects.requireNonNull(graph);
-        Objects.requireNonNull(merger);
-        if(graph.nodeCount()!=nodeCount()){
-            throw new IllegalArgumentException();
-        }
-        .
-        .
-        .
-    }
+    public void mergeAll(Graph<? extends T> graph, BinaryOperator<T> merger) {
+		Objects.requireNonNull(graph);
+		Objects.requireNonNull(merger);
+		if(graph.nodeCount() != nodeCount()) {
+			throw new IllegalArgumentException();
+		}
+		for(var src=0; src < nodeCount; src++) {
+			for(var dst=0; dst < nodeCount(); dst++) {
+				var weight1 = getWeight(src,dst);
+				var weight2 = graph.getWeight(src, dst);
+				if(weight2.isEmpty()) {
+					continue;
+				}
+				if(weight1.isPresent()) {	
+					addEdge(src, dst, merger.apply(weight1.orElseThrow(), weight2.orElseThrow()));	
+				}
+				else {
+					addEdge(src,dst,weight2.orElseThrow());
+				}
+			}
+		}
+	}
 }
 ```
 ```java
@@ -101,12 +113,112 @@ Pour le merge all on doit utiliser un ``BinaryOperator<T>`` car on nous demande 
 ### 5. En fait, on peut remarquer que l'on peut écrire le code de mergeAll pour qu'il soit indépendant de l'implantation et donc écrire l'implantation de mergeAll directement dans l'interface.<br>Déplacer l'implantation de mergeAll dans l'interface et si nécessaire modifier le code pour qu'il soit indépendant de l'implantation.
 
 ```java
+public sealed interface Graph<T> permits MatrixGraph{
+	...
+	default void mergeAll(Graph<? extends T> graph, BinaryOperator<T> merger) {
+		Objects.requireNonNull(graph);
+		Objects.requireNonNull(merger);
+		if(graph.nodeCount() != nodeCount()) {
+			throw new IllegalArgumentException();
+		}
+		for(var src=0; src < nodeCount(); src++) {
+			for(var dst=0; dst < nodeCount(); dst++) {
+				var weight1 = getWeight(src,dst);
+				var weight2 = graph.getWeight(src, dst);
+				if(weight2.isEmpty()) {
+					continue;
+				}
+				if(weight1.isPresent()) {	
+					addEdge(src, dst, merger.apply(weight1.orElseThrow(), weight2.orElseThrow()));	
+				}
+				else {
+					addEdge(src,dst,weight2.orElseThrow());
+				}
+			}
+		}
+	}
+}
+```
+### 6. Rappeler le fonctionnement d'un itérateur et de ses méthodes hasNext et next.<br>Que renvoie next si hasNext retourne false ?<br>Expliquer pourquoi il n'est pas nécessaire, dans un premier temps, d'implanter la méthode remove qui fait pourtant partie de l'interface.<br>Implanter la méthode neighborsIterator(src) qui renvoie un itérateur sur tous les nœuds ayant un arc dont la source est src.
+
+```java
+final class MatrixGraph<T> implements Graph<T> {
+	...
+	public Iterator<Integer> neighborIterator(int src){
+		Objects.checkIndex(src, nodeCount());
+		return new Iterator<>(){
+			
+			private Optional<Integer> it=isValid(0);
+			
+			private Optional<Integer> isValid(int value) {
+				for(var dst=value; dst < nodeCount();dst++) {
+					if(array[src*nodeCount+dst]!=null) {
+						return Optional.of(dst);
+					}
+				}
+				return Optional.empty();
+			}
+			
+			@Override
+			public boolean hasNext() {
+				return it.isPresent();
+			}
+
+			@Override
+			public Integer next() {
+				if(!hasNext()) {
+					throw new NoSuchElementException();
+				}
+				var value = it.orElseThrow();
+				it = isValid(it.orElseThrow()+1);
+				return value;
+			}
+			
+		};
+	}
+}
 ```
 ```java
+public sealed interface Graph<T> permits MatrixGraph{
+	...
+	Iterator<Integer> neighborIterator(int src);
+}
 ```
+- Un iterateur permet de parcourir notre array de notre classe avec une boucle forEach
+- La methode ``hasNext()`` permet de savoir si l'élément suivant existe
+- La methode ``next()`` renvoie l'élément suivant, si ``hasNext()`` renvoie vrai, sinon on renvoi un ``NoSuchElementException``
+
+### 7. Expliquer le fonctionnement précis de la méthode remove de l'interface Iterator.<br>Implanter la méthode remove de l'itérateur.
 ```java
-```
-```java
+final class MatrixGraph<T> implements Graph<T> {
+	...
+	public Iterator<Integer> neighborIterator(int src){
+		Objects.checkIndex(src, nodeCount());
+		return new Iterator<>(){
+			private Optional<Integer> it=isValid(0);
+			private Optional<Integer> previous= Optional.empty();
+			...
+			@Override
+			public Integer next() {
+				if(!hasNext()) {
+					throw new NoSuchElementException();
+				}
+				previous = it;
+				it = isValid(it.orElseThrow()+1);
+				return previous.orElseThrow();
+			}
+			
+			public void remove() {
+				if(previous.isEmpty()) {
+					throw new IllegalStateException();
+				}
+				array[src*nodeCount+previous.orElseThrow()]=null;
+				previous=it;
+			}
+			
+		};
+	}
+}
 ```
 ```java
 ```
