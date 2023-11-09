@@ -5,6 +5,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 /**
  * An oriented graph with values on edges and not on nodes.
@@ -115,7 +116,16 @@ public sealed interface Graph<T> permits MatrixGraph{
 	 * @throws NullPointerException if consumer is null.
 	 * @throws IndexOutOfBoundsException if src is not a valid index for a node.
 	 */
-	 void forEachEdge(int src,Consumer<? super T> function);
+	default void forEachEdge(int src,Consumer<? super Edge<T>> function) {
+		Objects.requireNonNull(function);
+		Objects.checkIndex(src, nodeCount());
+		for(var dst=0; dst < nodeCount();dst++) {
+			if(!getWeight(src, dst).isEmpty()) {
+				var value = new Edge<T>(src,dst,getWeight(src, dst).get());
+				function.accept(value);
+			}
+		}
+	}
 
 	// Q9
 
@@ -124,7 +134,12 @@ public sealed interface Graph<T> permits MatrixGraph{
 	 *
 	 * @return all the edges of the graph that have a value in any order.
 	 */
-	//edges()
+	default Stream<T> edges() {
+		for(var src =0;src < nodeCount();src++) {
+			forEachEdge(src, edge -> new Edge<>(0, 0, getWeight(0, 0).get()));
+		}
+		return null;
+	}
 
 	/**
 	 * Create a graph implementation based on a node map.
