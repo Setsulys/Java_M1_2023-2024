@@ -4,9 +4,12 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 final class MatrixGraph<T> implements Graph<T> {
+	
+	public record Edge<T>(int src,int dst,T weight){
+		
+	}
 
 	private final T[] array;
 	private int nodeCount;
@@ -78,10 +81,4 @@ final class MatrixGraph<T> implements Graph<T> {
 
 		};
 	}
-
-	public void forEachEdge(int src,Consumer<? super T> function) {
-		Objects.requireNonNull(function);
-		Objects.checkIndex(src, nodeCount());
-	}
-
 }

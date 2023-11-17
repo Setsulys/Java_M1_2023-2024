@@ -220,7 +220,35 @@ final class MatrixGraph<T> implements Graph<T> {
 	}
 }
 ```
+
+### 8. On souhaite ajouter une méthode forEachEdge qui prend en paramètre un index d'un nœud et une fonction qui est appel cette fonction avec chaque arc sortant de ce nœud. <br>Pour cela, nous allons, dans un premier temps, définir le type Graph.Edge à l'intérieur de l'interface Graph. Un Graph.Edge est définie par un entier src, un entier dst et un poids weight.
 ```java
+final class MatrixGraph<T> implements Graph<T> {
+	
+	public record Edge<T>(int src,int dst,T weight){
+		
+	}
+	...
+}
 ```
 ```java
+public sealed interface Graph<T> permits MatrixGraph{
+	...
+	default void forEachEdge(int src,Consumer<? super Edge<T>> function) {
+		Objects.requireNonNull(function);
+		Objects.checkIndex(src, nodeCount());
+		for(var dst=0; dst < nodeCount();dst++) {
+			if(!getWeight(src, dst).isEmpty()) {
+				var value = new Edge<T>(src,dst,getWeight(src, dst).get());
+				function.accept(value);
+			}
+		}
+	}
+}
+```
+
+### 9. Enfin, on souhaite écrire une méthode edges qui renvoie tous les arcs du graphe sous forme d'un stream.<br>L'idée ici n'est pas de réimplanter son propre stream (c'est prévu dans la suite du cours) mais de créer un stream sur tous les nœuds (sous forme d'entier) puis pour chaque nœud de renvoyer tous les arcs en réutilisant la méthode forEachEdge que l'on vient d'écrire.
+
+```java
+
 ```

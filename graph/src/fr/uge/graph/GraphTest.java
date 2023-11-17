@@ -647,71 +647,71 @@ public class GraphTest {
   }
 
 
-//  @Nested
-//  public class Q9 {
-//    @ParameterizedTest
-//    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
-//    public void edgesIntegers(GraphFactory factory) {
-//      var graph = factory.<Integer>createGraph(2);
-//      graph.addEdge(0, 0, 0);
-//      graph.addEdge(1, 0, 10);
-//      graph.addEdge(1, 1, 11);
-//
-//      var set = graph.edges().collect(toSet());
-//      assertEquals(Set.of(
-//          new Graph.Edge<>(0, 0, 0),
-//          new Graph.Edge<>(1, 0, 10),
-//          new Graph.Edge<>(1, 1, 11)
-//      ), set);
-//    }
-//
-//    @ParameterizedTest
-//    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
-//    public void edgesString(GraphFactory factory) {
-//      var graph = factory.<String>createGraph(4);
-//      graph.addEdge(0, 0, "foo");
-//      graph.addEdge(1, 3, "bar");
-//      graph.addEdge(2, 2, "whizz");
-//      graph.addEdge(3, 1, "baz");
-//
-//      var set = Set.copyOf(graph.edges().toList());
-//      assertEquals(Set.of(
-//          new Graph.Edge<>(0, 0, "foo"),
-//          new Graph.Edge<>(1, 3, "bar"),
-//          new Graph.Edge<>(2, 2, "whizz"),
-//          new Graph.Edge<>(3, 1, "baz")
-//      ), set);
-//    }
-//
-//    @ParameterizedTest
-//    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
-//    public void edgesEmpty(GraphFactory factory) {
-//      var graph = factory.createGraph(8);
-//      assertTrue(graph.edges().findFirst().isEmpty());
-//    }
-//
-//    @ParameterizedTest
-//    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
-//    public void edgesALot(GraphFactory factory) {
-//      var graph = factory.createGraph(1_000);
-//      for(var j = 0; j < graph.nodeCount(); j++) {
-//        for(var i = 0; i < graph.nodeCount(); i++) {
-//          graph.addEdge(i, j, i + j);
-//        }
-//      }
-//
-//      var edges = graph.edges().toList();
-//      assertEquals(1_000_000, edges.size());
-//      for(var edge: edges) {
-//        assertEquals(edge.src() + edge.dst(), edge.weight());
-//      }
-//    }
-//
-//    @Test
-//    public void edgesIsNotAbstract() {
-//      assertTrue(Arrays.stream(Graph.class.getMethods())
-//          .filter(m -> m.getName().equals("edges"))
-//          .noneMatch(m -> m.accessFlags().contains(AccessFlag.ABSTRACT)));
-//    }
-//  }
+  @Nested
+  public class Q9 {
+    @ParameterizedTest
+    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
+    public void edgesIntegers(GraphFactory factory) {
+      var graph = factory.<Integer>createGraph(2);
+      graph.addEdge(0, 0, 0);
+      graph.addEdge(1, 0, 10);
+      graph.addEdge(1, 1, 11);
+
+      var set = graph.edges().collect(toSet());
+      assertEquals(Set.of(
+          new Graph.Edge<>(0, 0, 0),
+          new Graph.Edge<>(1, 0, 10),
+          new Graph.Edge<>(1, 1, 11)
+      ), set);
+    }
+
+    @ParameterizedTest
+    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
+    public void edgesString(GraphFactory factory) {
+      var graph = factory.<String>createGraph(4);
+      graph.addEdge(0, 0, "foo");
+      graph.addEdge(1, 3, "bar");
+      graph.addEdge(2, 2, "whizz");
+      graph.addEdge(3, 1, "baz");
+
+      var set = Set.copyOf(graph.edges().toList());
+      assertEquals(Set.of(
+          new Graph.Edge<>(0, 0, "foo"),
+          new Graph.Edge<>(1, 3, "bar"),
+          new Graph.Edge<>(2, 2, "whizz"),
+          new Graph.Edge<>(3, 1, "baz")
+      ), set);
+    }
+
+    @ParameterizedTest
+    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
+    public void edgesEmpty(GraphFactory factory) {
+      var graph = factory.createGraph(8);
+      assertTrue(graph.edges().findFirst().isEmpty());
+    }
+
+    @ParameterizedTest
+    @MethodSource("fr.uge.graph.GraphTest#graphFactoryProvider")
+    public void edgesALot(GraphFactory factory) {
+      var graph = factory.createGraph(1_000);
+      for(var j = 0; j < graph.nodeCount(); j++) {
+        for(var i = 0; i < graph.nodeCount(); i++) {
+          graph.addEdge(i, j, i + j);
+        }
+      }
+
+      var edges = graph.edges().toList();
+      assertEquals(1_000_000, edges.size());
+      for(var edge: edges) {
+        assertEquals(edge.src() + edge.dst(), edge.weight());
+      }
+    }
+
+    @Test
+    public void edgesIsNotAbstract() {
+      assertTrue(Arrays.stream(Graph.class.getMethods())
+          .filter(m -> m.getName().equals("edges"))
+          .noneMatch(m -> m.accessFlags().contains(AccessFlag.ABSTRACT)));
+    }
+  }
 }
