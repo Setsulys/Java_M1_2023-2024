@@ -282,210 +282,210 @@ public class SeqTest {
   }
 
 
-//  @Nested
-//  public class Q4  {
-//    @Test
-//    public void testFirstSimple() {
-//      assertAll(
-//          () -> assertEquals("1", Seq.from(List.of("1", "2")).findFirst().orElseThrow()),
-//          () -> assertEquals((Integer)11, Seq.from(List.of(11, 13)).findFirst().orElseThrow())
-//      );
-//    }
-//
-//    @Test
-//    public void testFirstEmpty() {
-//      assertAll(
-//          () -> assertTrue(Seq.from(List.of()).findFirst().isEmpty()),
-//          () -> assertFalse(Seq.from(List.of()).findFirst().isPresent())
-//      );
-//    }
-//
-//    @Test
-//    public void testFirstMap() {
-//      var seq1 = Seq.from(List.of("1", "3")).map(s -> s.concat(" zorg"));
-//      var seq2 = Seq.from(List.of()).map(s -> s + " zorg");
-//      assertAll(
-//          () -> assertEquals("1 zorg", seq1.findFirst().orElseThrow()),
-//          () -> assertTrue(seq2.findFirst().isEmpty())
-//      );
-//    }
-//
-//    @Test
-//    public void testFirstMapCompose() {
-//      var seq1 = Seq.from(List.of("1", "3", "2"));
-//      var seq2 = seq1.map(Integer::parseInt);
-//      var seq3 = seq2.map(String::valueOf);
-//      assertEquals("1", seq3.findFirst().orElseThrow());
-//    }
-//
-//    @Test
-//    public void testFirstMapNotCalledIfEmpty() {
-//      var seq = Seq.from(List.of()).map(__ -> fail(""));
-//      assertTrue(seq.findFirst().isEmpty());
-//    }
-//
-//    @Test
-//    public void testFirstMapNotCalledMoreThanOnce() {
-//      var fun = new Object() {
-//        int counter;
-//        Object apply(Object o) {
-//          counter++;
-//          return o;
-//        }
-//      };
-//      var seq = Seq.from(List.of(1, 8, 45)).map(fun::apply);
-//      assertEquals(1, seq.findFirst().orElseThrow());
-//      assertEquals(1, fun.counter);
-//    }
-//  }
-//
-//
-//  @Nested
-//  public class Q5  {
-//    @Test
-//    public void testStreamSimple() {
-//      var list = List.of("foo", "bar");
-//      var seq = Seq.from(list);
-//      Stream<String> stream = seq.stream();
-//      assertEquals(list, stream.toList());
-//    }
-//
-//    @Test
-//    public void testStreamSimple2() {
-//      var list = new ArrayList<Integer>();
-//      Stream<Integer> stream = Seq.from(List.of(7, 77)).stream();
-//      stream.forEach(list::add);
-//      assertEquals(List.of(7, 77), list);
-//    }
-//
-//    @Test
-//    public void testStreamCount() {
-//      var list = range(0, 1_000).boxed().toList();
-//      var seq = Seq.from(list);
-//      assertEquals(seq.size(), seq.stream().count());
-//    }
-//
-//    @Test
-//    public void testStreamCount2() {
-//      var list = range(0, 1_000).boxed().toList();
-//      var seq = Seq.from(list);
-//      assertEquals(seq.size(), seq.stream().map(e -> fail()).count());
-//    }
-//
-//    @Test
-//    public void testLazyMApAndNoAdditionalDataStructure() {
-//      var list = List.of("foo", "bar");
-//      var stream = Seq.from(list).map(__->fail()).stream();
-//      assertNotNull(stream);
-//    }
-//
-//    @Test
-//    public void testStreamALot() {
-//      var list = range(0, 1_000_000).boxed().toList();
-//      var stream = Seq.from(list).stream();
-//      assertEquals(list, stream.toList());
-//    }
-//
-//    @Test
-//    public void testIsParallelStream() {
-//      var seq = Seq.from(List.of());
-//      assertAll(
-//          () -> assertFalse(seq.stream().isParallel()),
-//          () -> assertTrue(seq.stream().parallel().isParallel())
-//      );
-//    }
-//
-//    @Test
-//    public void testParallelStreamALot() {
-//      var list = range(0, 1_000_000).boxed().toList();
-//      var stream = Seq.from(list).stream().parallel();
-//      assertEquals(list, stream.toList());
-//    }
-//
-//    @Test
-//    public void testParallelStreamCount() {
-//      var list = range(0, 1_000).boxed().toList();
-//      var seq = Seq.from(list);
-//      assertEquals(seq.size(), seq.stream().parallel().map(e -> fail()).count());
-//    }
-//
-//    @Test
-//    public void testStreamSpliteratorCharacteristic() {
-//      var spliterator = Seq.from(List.of("foo")).stream().spliterator();
-//      assertAll(
-//          () -> assertTrue(spliterator.hasCharacteristics(Spliterator.IMMUTABLE)),
-//          () -> assertTrue(spliterator.hasCharacteristics(Spliterator.ORDERED)),
-//          () -> assertFalse(spliterator.hasCharacteristics(Spliterator.CONCURRENT)),
-//          () -> assertFalse(spliterator.hasCharacteristics(Spliterator.DISTINCT)),
-//          () -> assertFalse(spliterator.hasCharacteristics(Spliterator.SORTED)),
-//          () -> assertFalse(spliterator.hasCharacteristics(Spliterator.NONNULL))
-//      );
-//    }
-//
-//    @Test
-//    public void testSpliteratorPreconditions() {
-//      assertAll(
-//          () -> assertThrows(NullPointerException.class, () -> Seq.from(List.of()).stream().spliterator().forEachRemaining(null)),
-//          () -> assertThrows(NullPointerException.class, () -> Seq.from(List.of()).stream().spliterator().tryAdvance(null))
-//      );
-//    }
-//
-//    @Test
-//    public void testStreamSpliteratorNotSplittable() {
-//      assertAll(
-//          () -> assertNull(Seq.from(List.of()).stream().spliterator().trySplit()),
-//          () -> assertNull(Seq.from(List.of("foo")).stream().spliterator().trySplit())
-//      );
-//    }
-//
-//    @Test
-//    public void testMapStream() {
-//      var seq1 = Seq.from(List.of("1", "3")).map(s -> s.concat(" fizz"));
-//      var seq2 = seq1.map(s -> s + " buzz");
-//      assertAll(
-//          () -> assertEquals("1 fizz - 3 fizz",seq1.stream().collect(Collectors.joining(" - "))),
-//          () -> assertEquals("1 fizz buzz - 3 fizz buzz",seq2.stream().collect(Collectors.joining(" - ")))
-//      );
-//    }
-//
-//    @Test
-//    public void testFirstMapStream() {
-//      var seq1 = Seq.from(List.of("1", "3")).map(s -> s.concat(" zorg"));
-//      var seq2 = Seq.from(List.of()).map(s -> s + " zorg");
-//      assertAll(
-//          () -> assertEquals(seq1.stream().findFirst().orElseThrow(), seq1.findFirst().orElseThrow()),
-//          () -> assertTrue(seq2.findFirst().isEmpty())
-//      );
-//    }
-//
-//    @Test
-//    public void testStreamSpliteratorSplittable() {
-//      var list = range(0, 1_000_000).boxed().toList();
-//      var spliterator = Seq.from(list).stream().spliterator();
-//      assertNotNull(spliterator.trySplit());
-//    }
-//
-//    @Test
-//    public void testStreamSpliteratorSplittableAndFair() {
-//      var list = range(0, 1_000_000).boxed().toList();
-//      var spliterator = Seq.from(list).stream().spliterator();
-//      var spliterator2 = spliterator.trySplit();
-//      assertNotNull(spliterator2);
-//      assertEquals(1_000_000 / 2, spliterator.estimateSize());
-//      assertEquals(1_000_000 / 2, spliterator2.estimateSize());
-//    }
-//
-//    @Test
-//    public void testStreamSpliteratorSplittableWithMap() {
-//      var list = range(0, 1_000_000).boxed().toList();
-//      var spliterator = Seq.from(list).map(x->42).stream().spliterator();
-//      var newSpliterator = spliterator.trySplit();
-//      assertNotNull(newSpliterator);
-//      assertEquals(42, StreamSupport.stream(newSpliterator,false).findFirst().orElseThrow());
-//    }
-//  }
-//
-//
+  @Nested
+  public class Q4  {
+    @Test
+    public void testFirstSimple() {
+      assertAll(
+          () -> assertEquals("1", Seq.from(List.of("1", "2")).findFirst().orElseThrow()),
+          () -> assertEquals((Integer)11, Seq.from(List.of(11, 13)).findFirst().orElseThrow())
+      );
+    }
+
+    @Test
+    public void testFirstEmpty() {
+      assertAll(
+          () -> assertTrue(Seq.from(List.of()).findFirst().isEmpty()),
+          () -> assertFalse(Seq.from(List.of()).findFirst().isPresent())
+      );
+    }
+
+    @Test
+    public void testFirstMap() {
+      var seq1 = Seq.from(List.of("1", "3")).map(s -> s.concat(" zorg"));
+      var seq2 = Seq.from(List.of()).map(s -> s + " zorg");
+      assertAll(
+          () -> assertEquals("1 zorg", seq1.findFirst().orElseThrow()),
+          () -> assertTrue(seq2.findFirst().isEmpty())
+      );
+    }
+
+    @Test
+    public void testFirstMapCompose() {
+      var seq1 = Seq.from(List.of("1", "3", "2"));
+      var seq2 = seq1.map(Integer::parseInt);
+      var seq3 = seq2.map(String::valueOf);
+      assertEquals("1", seq3.findFirst().orElseThrow());
+    }
+
+    @Test
+    public void testFirstMapNotCalledIfEmpty() {
+      var seq = Seq.from(List.of()).map(__ -> fail(""));
+      assertTrue(seq.findFirst().isEmpty());
+    }
+
+    @Test
+    public void testFirstMapNotCalledMoreThanOnce() {
+      var fun = new Object() {
+        int counter;
+        Object apply(Object o) {
+          counter++;
+          return o;
+        }
+      };
+      var seq = Seq.from(List.of(1, 8, 45)).map(fun::apply);
+      assertEquals(1, seq.findFirst().orElseThrow());
+      assertEquals(1, fun.counter);
+    }
+  }
+
+
+  @Nested
+  public class Q5  {
+    @Test
+    public void testStreamSimple() {
+      var list = List.of("foo", "bar");
+      var seq = Seq.from(list);
+      Stream<String> stream = seq.stream();
+      assertEquals(list, stream.toList());
+    }
+
+    @Test
+    public void testStreamSimple2() {
+      var list = new ArrayList<Integer>();
+      Stream<Integer> stream = Seq.from(List.of(7, 77)).stream();
+      stream.forEach(list::add);
+      assertEquals(List.of(7, 77), list);
+    }
+
+    @Test
+    public void testStreamCount() {
+      var list = range(0, 1_000).boxed().toList();
+      var seq = Seq.from(list);
+      assertEquals(seq.size(), seq.stream().count());
+    }
+
+    @Test
+    public void testStreamCount2() {
+      var list = range(0, 1_000).boxed().toList();
+      var seq = Seq.from(list);
+      assertEquals(seq.size(), seq.stream().map(e -> fail()).count());
+    }
+
+    @Test
+    public void testLazyMApAndNoAdditionalDataStructure() {
+      var list = List.of("foo", "bar");
+      var stream = Seq.from(list).map(__->fail()).stream();
+      assertNotNull(stream);
+    }
+
+    @Test
+    public void testStreamALot() {
+      var list = range(0, 1_000_000).boxed().toList();
+      var stream = Seq.from(list).stream();
+      assertEquals(list, stream.toList());
+    }
+
+    @Test
+    public void testIsParallelStream() {
+      var seq = Seq.from(List.of());
+      assertAll(
+          () -> assertFalse(seq.stream().isParallel()),
+          () -> assertTrue(seq.stream().parallel().isParallel())
+      );
+    }
+
+    @Test
+    public void testParallelStreamALot() {
+      var list = range(0, 1_000_000).boxed().toList();
+      var stream = Seq.from(list).stream().parallel();
+      assertEquals(list, stream.toList());
+    }
+
+    @Test
+    public void testParallelStreamCount() {
+      var list = range(0, 1_000).boxed().toList();
+      var seq = Seq.from(list);
+      assertEquals(seq.size(), seq.stream().parallel().map(e -> fail()).count());
+    }
+
+    @Test
+    public void testStreamSpliteratorCharacteristic() {
+      var spliterator = Seq.from(List.of("foo")).stream().spliterator();
+      assertAll(
+          () -> assertTrue(spliterator.hasCharacteristics(Spliterator.IMMUTABLE)),
+          () -> assertTrue(spliterator.hasCharacteristics(Spliterator.ORDERED)),
+          () -> assertFalse(spliterator.hasCharacteristics(Spliterator.CONCURRENT)),
+          () -> assertFalse(spliterator.hasCharacteristics(Spliterator.DISTINCT)),
+          () -> assertFalse(spliterator.hasCharacteristics(Spliterator.SORTED)),
+          () -> assertFalse(spliterator.hasCharacteristics(Spliterator.NONNULL))
+      );
+    }
+
+    @Test
+    public void testSpliteratorPreconditions() {
+      assertAll(
+          () -> assertThrows(NullPointerException.class, () -> Seq.from(List.of()).stream().spliterator().forEachRemaining(null)),
+          () -> assertThrows(NullPointerException.class, () -> Seq.from(List.of()).stream().spliterator().tryAdvance(null))
+      );
+    }
+
+    @Test
+    public void testStreamSpliteratorNotSplittable() {
+      assertAll(
+          () -> assertNull(Seq.from(List.of()).stream().spliterator().trySplit()),
+          () -> assertNull(Seq.from(List.of("foo")).stream().spliterator().trySplit())
+      );
+    }
+
+    @Test
+    public void testMapStream() {
+      var seq1 = Seq.from(List.of("1", "3")).map(s -> s.concat(" fizz"));
+      var seq2 = seq1.map(s -> s + " buzz");
+      assertAll(
+          () -> assertEquals("1 fizz - 3 fizz",seq1.stream().collect(Collectors.joining(" - "))),
+          () -> assertEquals("1 fizz buzz - 3 fizz buzz",seq2.stream().collect(Collectors.joining(" - ")))
+      );
+    }
+
+    @Test
+    public void testFirstMapStream() {
+      var seq1 = Seq.from(List.of("1", "3")).map(s -> s.concat(" zorg"));
+      var seq2 = Seq.from(List.of()).map(s -> s + " zorg");
+      assertAll(
+          () -> assertEquals(seq1.stream().findFirst().orElseThrow(), seq1.findFirst().orElseThrow()),
+          () -> assertTrue(seq2.findFirst().isEmpty())
+      );
+    }
+
+    @Test
+    public void testStreamSpliteratorSplittable() {
+      var list = range(0, 1_000_000).boxed().toList();
+      var spliterator = Seq.from(list).stream().spliterator();
+      assertNotNull(spliterator.trySplit());
+    }
+
+    @Test
+    public void testStreamSpliteratorSplittableAndFair() {
+      var list = range(0, 1_000_000).boxed().toList();
+      var spliterator = Seq.from(list).stream().spliterator();
+      var spliterator2 = spliterator.trySplit();
+      assertNotNull(spliterator2);
+      assertEquals(1_000_000 / 2, spliterator.estimateSize());
+      assertEquals(1_000_000 / 2, spliterator2.estimateSize());
+    }
+
+    @Test
+    public void testStreamSpliteratorSplittableWithMap() {
+      var list = range(0, 1_000_000).boxed().toList();
+      var spliterator = Seq.from(list).map(x->42).stream().spliterator();
+      var newSpliterator = spliterator.trySplit();
+      assertNotNull(newSpliterator);
+      assertEquals(42, StreamSupport.stream(newSpliterator,false).findFirst().orElseThrow());
+    }
+  }
+
+
 //  @Nested
 //  public class Q6  {
 //    @Test
