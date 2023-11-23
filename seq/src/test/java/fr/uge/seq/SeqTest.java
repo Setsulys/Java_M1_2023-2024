@@ -486,321 +486,321 @@ public class SeqTest {
   }
 
 
-//  @Nested
-//  public class Q6  {
-//    @Test
-//    public void testOfSimple() {
-//      Seq<String> seq = Seq.of("foo", "bar");
-//      assertEquals(2, seq.size());
-//    }
-//
-//    @Test
-//    public void testOfSimple2() {
-//      Seq<Integer> seq = Seq.of(12, 45);
-//      assertEquals(2, seq.size());
-//    }
-//
-//    @Test
-//    public void testOfNullArray() {
-//      assertThrows(NullPointerException.class, () -> Seq.of((Object)null));
-//    }
-//
-//    @Test
-//    public void testOfNullElement() {
-//      assertThrows(NullPointerException.class, () -> Seq.of((Object[])null));
-//    }
-//
-//    @Test
-//    public void testOfSize() {
-//      var seq = Seq.of("78", "56", "34", "23");
-//      assertEquals(4, seq.size());
-//    }
-//
-//    @Test
-//    public void testOfGet() {
-//      var seq = Seq.of(101, 201, 301);
-//      assertAll(
-//          () -> assertEquals((Integer)101, seq.get(0)),
-//          () -> assertEquals((Integer)201, seq.get(1)),
-//          () -> assertEquals((Integer)301, seq.get(2))
-//      );
-//    }
-//
-//    @Test
-//    public void onlyOneImplementationOfSeq() {
-//      var seq = Seq.from(List.of("foo", "bar"));
-//      var seq2 = Seq.of("foo", "bar");
-//      assertSame(seq.getClass(), seq2.getClass());
-//    }
-//
-//    @Test
-//    public void testOfGetOutOfBounds() {
-//      var seq = Seq.of("foo", "bar");
-//      assertAll(
-//          () -> assertThrows(IndexOutOfBoundsException.class, () -> seq.get(-1)),
-//          () -> assertThrows(IndexOutOfBoundsException.class, () -> seq.get(2))
-//      );
-//    }
-//
-//    @Test
-//    public void testOfToString() {
-//      var seq = Seq.of(8, 5, 3);
-//      assertEquals(seq.toString(), "<8, 5, 3>");
-//    }
-//
-//    @Test
-//    public void testOfToStringOneElement() {
-//      var seq = Seq.of("hello");
-//      assertEquals(seq.toString(), "<hello>");
-//    }
-//
-//    @Test
-//    public void testOfToStringEmpty() {
-//      var seq = Seq.of();
-//      assertEquals(seq.toString(), "<>");
-//    }
-//
-//    @Test
-//    public void testOfMapSimple() {
-//      Seq<String> seq = Seq.of("1", "2");
-//      Seq<Integer> seq2 = seq.map(Integer::parseInt);
-//
-//      ArrayList<Integer> list = new ArrayList<>();
-//      for(var i = 0; i < seq2.size(); i++) {
-//        list.add(seq2.get(i));
-//      }
-//      assertEquals(List.of(1, 2), list);
-//    }
-//
-//    @Test
-//    public void testOfMapNull() {
-//      var seq = Seq.of(1, 2);
-//      assertThrows(NullPointerException.class, () -> seq.map(null));
-//    }
-//
-//    @Test
-//    public void testOfMapSignature1() {
-//      var seq = Seq.of(11, 75);
-//      UnaryOperator<Object> identity = x -> x;
-//      Seq<Object> seq2 = seq.map(identity);
-//      var list = new ArrayList<>();
-//      for(var i = 0; i < seq2.size(); i++) {
-//        list.add(seq2.get(i));
-//      }
-//      assertEquals(List.of(11, 75), list);
-//    }
-//
-//    @Test
-//    public void testOfMapSignature2() {
-//      var seq = Seq.of("foo", "bar");
-//      UnaryOperator<String> identity = x -> x;
-//      Seq<Object> seq2 = seq.map(identity);
-//      var list = new ArrayList<>();
-//      for(var i = 0; i < seq2.size(); i++) {
-//        list.add(seq2.get(i));
-//      }
-//      assertEquals(List.of("foo", "bar"), list);
-//    }
-//
-//    @Test
-//    public void testOfMapGet() {
-//      var seq = Seq.of(101, 201, 301);
-//      var seq2 = seq.map(x -> 2 * x);
-//      assertAll(
-//          () -> assertEquals((Integer)202, seq2.get(0)),
-//          () -> assertEquals((Integer)402, seq2.get(1)),
-//          () -> assertEquals((Integer)602, seq2.get(2))
-//      );
-//    }
-//
-//    @Test
-//    public void testOfMapGetNotCalledIfOutOfBounds() {
-//      var seq = Seq.of(24, 36).map(__ -> fail(""));
-//      assertAll(
-//          () -> assertThrows(IndexOutOfBoundsException.class, () -> seq.get(-1)),
-//          () -> assertThrows(IndexOutOfBoundsException.class, () -> seq.get(2))
-//      );
-//    }
-//
-//    @Test
-//    public void testOfMapSize() {
-//      var seq = Seq.of(101, 201, 301);
-//      seq = seq.map(x -> 2 * x);
-//      assertEquals(3, seq.size());
-//    }
-//
-//    @Test
-//    public void testMapNotCalledForSize() {
-//      var seq = Seq.of(42, 777);
-//      var seq2 = seq.map(x -> { fail("should not be called"); return null; });
-//
-//      assertEquals(2, seq2.size());
-//    }
-//
-//    @Test
-//    public void testOfMapShouldNotBeCalledForSize() {
-//      var seq = Seq.of(42, 777);
-//      var seq2 = seq.map(x -> { fail("should not be called"); return null; });
-//      var seq3 = seq2.map(x -> { fail("should not be called"); return null; });
-//
-//      assertEquals(2, seq3.size());
-//    }
-//
-//    @Test
-//    public void testOfMapToString() {
-//      var seq = Seq.of(10, 20);
-//      seq = seq.map(x -> 2 * x);
-//      assertEquals("<20, 40>", seq.toString());
-//    }
-//
-//    @Test
-//    public void testOfMapToStringShouldNotBeCalledIfEmpty() {
-//      var seq = Seq.of().map(__ -> fail(""));
-//      assertEquals("<>", seq.toString());
-//    }
-//
-//    @Test
-//    public void testOnlyOneImplementation() {
-//      assertSame(Seq.from(List.of()).getClass(), Seq.of().getClass());
-//    }
-//  }
-//
-//
-//  @Nested
-//  public class Q7  {
-//    @Test
-//    public void testIteratorEnhancedForIntegers() {
-//      var seq = Seq.from(List.of(25, 52));
-//      var list = new ArrayList<Integer>();
-//      for(Integer value: seq) {
-//        list.add(value);
-//      }
-//      assertEquals(List.of(25, 52), list);
-//    }
-//
-//    @Test
-//    public void testIteratorEnhancedForStrings() {
-//      var seq = Seq.from(List.of("25", "52"));
-//      var list = new ArrayList<String>();
-//      for(String value: seq) {
-//        list.add(value);
-//      }
-//      assertEquals(List.of("25", "52"), list);
-//    }
-//
-//    @Test
-//    public void testIterator() {
-//      var seq = Seq.from(List.of("foo", "bar"));
-//      Iterator<String> it = seq.iterator();
-//      assertTrue(it.hasNext());
-//      assertEquals("foo", it.next());
-//      assertTrue(it.hasNext());
-//      assertEquals("bar", it.next());
-//      assertFalse(it.hasNext());
-//    }
-//
-//    @Test
-//    public void testIteratorALot() {
-//      var seq = Seq.from(range(0, 10_000).boxed().toList());
-//      Iterator<Integer> it = seq.iterator();
-//      for(var i = 0; i < 10_000; i++) {
-//        IntStream.range(0, 17).forEach(x -> assertTrue(it.hasNext()));
-//        assertEquals(i, (int)it.next());
-//      }
-//      IntStream.range(0, 17).forEach(x -> assertFalse(it.hasNext()));
-//    }
-//
-//    @Test
-//    public void testIteratorAtTheEnd() {
-//      var seq = Seq.from(List.of(67, 89));
-//      Iterator<Integer> it = seq.iterator();
-//      assertEquals(67, (int)it.next());
-//      assertEquals(89, (int)it.next());
-//      assertThrows(NoSuchElementException.class, it::next);
-//    }
-//
-//    @Test
-//    public void testIteratorMap() {
-//      var seq = Seq.from(List.of(13, 666)).map(x -> x / 2);
-//      var list = new ArrayList<Integer>();
-//      seq.iterator().forEachRemaining(list::add);
-//      assertEquals(List.of(6, 333), list);
-//    }
-//
-//    @Test
-//    public void testIteratorRemove() {
-//      var empty = Seq.from(List.of());
-//      assertThrows(UnsupportedOperationException.class, () -> empty.iterator().remove());
-//    }
-//
-//    @Test
-//    public void testIteratorMapNotCalledIfEmpty() {
-//      var seq = Seq.from(List.of()).map(__ -> fail(""));
-//      var it = seq.iterator();
-//      assertFalse(it.hasNext());
-//    }
-//
-//    @Test
-//    public void testForEachEmpty() {
-//      var empty = Seq.from(List.of());
-//      empty.forEach(x -> fail("should not be called"));
-//    }
-//
-//    @Test
-//    public void testForEachSignature() {
-//      var seq = Seq.from(List.of(1));
-//      seq.forEach((Object o) -> assertEquals(1, o));
-//    }
-//
-//    @Test
-//    public void testForEachNull() {
-//      var seq = Seq.from(List.of(1, 2));
-//      assertThrows(NullPointerException.class, () -> seq.forEach(null));
-//    }
-//
-//    @Test
-//    public void testForEachNullEmpty() {
-//      var seq = Seq.from(List.of());
-//      assertThrows(NullPointerException.class, () -> seq.forEach(null));
-//    }
-//
-//    @Test
-//    public void testForEachALot() {
-//      var list = range(0, 1_000_000).boxed().toList();
-//      var seq = Seq.from(list);
-//      var l = new ArrayList<Integer>();
-//      assertTimeoutPreemptively(Duration.ofMillis(1_000), () -> seq.forEach(l::add));
-//      assertEquals(list, l);
-//    }
-//
-//    @Test
-//    public void testOfMapForEach() {
-//      var seq = Seq.from(List.of("1", "2", "3"));
-//      var seq2 = seq.map(Integer::parseInt);
-//
-//      var list = new ArrayList<Integer>();
-//      seq2.forEach(list::add);
-//      assertEquals(List.of(1, 2, 3), list);
-//    }
-//
-//    @Test
-//    public void testOfMapForEachCompose() {
-//      var seq = Seq.from(List.of("1", "2", "3"));
-//      var seq2 = seq.map(Integer::parseInt);
-//      var seq3 = seq2.map(String::valueOf);
-//
-//      var list = new ArrayList<String>();
-//      seq3.forEach(list::add);
-//      assertEquals(List.of("1", "2", "3"), list);
-//    }
-//
-//    @Test
-//    public void testOfMapForEachShouldNotBeCalledIfEmpty() {
-//      var seq = Seq.from(List.of()).map(__ -> fail(""));
-//      seq.forEach(__ -> fail(""));
-//    }
-//  }
-//
+  @Nested
+  public class Q6  {
+    @Test
+    public void testOfSimple() {
+      Seq<String> seq = Seq.of("foo", "bar");
+      assertEquals(2, seq.size());
+    }
+
+    @Test
+    public void testOfSimple2() {
+      Seq<Integer> seq = Seq.of(12, 45);
+      assertEquals(2, seq.size());
+    }
+
+    @Test
+    public void testOfNullArray() {
+      assertThrows(NullPointerException.class, () -> Seq.of((Object)null));
+    }
+
+    @Test
+    public void testOfNullElement() {
+      assertThrows(NullPointerException.class, () -> Seq.of((Object[])null));
+    }
+
+    @Test
+    public void testOfSize() {
+      var seq = Seq.of("78", "56", "34", "23");
+      assertEquals(4, seq.size());
+    }
+
+    @Test
+    public void testOfGet() {
+      var seq = Seq.of(101, 201, 301);
+      assertAll(
+          () -> assertEquals((Integer)101, seq.get(0)),
+          () -> assertEquals((Integer)201, seq.get(1)),
+          () -> assertEquals((Integer)301, seq.get(2))
+      );
+    }
+
+    @Test
+    public void onlyOneImplementationOfSeq() {
+      var seq = Seq.from(List.of("foo", "bar"));
+      var seq2 = Seq.of("foo", "bar");
+      assertSame(seq.getClass(), seq2.getClass());
+    }
+
+    @Test
+    public void testOfGetOutOfBounds() {
+      var seq = Seq.of("foo", "bar");
+      assertAll(
+          () -> assertThrows(IndexOutOfBoundsException.class, () -> seq.get(-1)),
+          () -> assertThrows(IndexOutOfBoundsException.class, () -> seq.get(2))
+      );
+    }
+
+    @Test
+    public void testOfToString() {
+      var seq = Seq.of(8, 5, 3);
+      assertEquals(seq.toString(), "<8, 5, 3>");
+    }
+
+    @Test
+    public void testOfToStringOneElement() {
+      var seq = Seq.of("hello");
+      assertEquals(seq.toString(), "<hello>");
+    }
+
+    @Test
+    public void testOfToStringEmpty() {
+      var seq = Seq.of();
+      assertEquals(seq.toString(), "<>");
+    }
+
+    @Test
+    public void testOfMapSimple() {
+      Seq<String> seq = Seq.of("1", "2");
+      Seq<Integer> seq2 = seq.map(Integer::parseInt);
+
+      ArrayList<Integer> list = new ArrayList<>();
+      for(var i = 0; i < seq2.size(); i++) {
+        list.add(seq2.get(i));
+      }
+      assertEquals(List.of(1, 2), list);
+    }
+
+    @Test
+    public void testOfMapNull() {
+      var seq = Seq.of(1, 2);
+      assertThrows(NullPointerException.class, () -> seq.map(null));
+    }
+
+    @Test
+    public void testOfMapSignature1() {
+      var seq = Seq.of(11, 75);
+      UnaryOperator<Object> identity = x -> x;
+      Seq<Object> seq2 = seq.map(identity);
+      var list = new ArrayList<>();
+      for(var i = 0; i < seq2.size(); i++) {
+        list.add(seq2.get(i));
+      }
+      assertEquals(List.of(11, 75), list);
+    }
+
+    @Test
+    public void testOfMapSignature2() {
+      var seq = Seq.of("foo", "bar");
+      UnaryOperator<String> identity = x -> x;
+      Seq<Object> seq2 = seq.map(identity);
+      var list = new ArrayList<>();
+      for(var i = 0; i < seq2.size(); i++) {
+        list.add(seq2.get(i));
+      }
+      assertEquals(List.of("foo", "bar"), list);
+    }
+
+    @Test
+    public void testOfMapGet() {
+      var seq = Seq.of(101, 201, 301);
+      var seq2 = seq.map(x -> 2 * x);
+      assertAll(
+          () -> assertEquals((Integer)202, seq2.get(0)),
+          () -> assertEquals((Integer)402, seq2.get(1)),
+          () -> assertEquals((Integer)602, seq2.get(2))
+      );
+    }
+
+    @Test
+    public void testOfMapGetNotCalledIfOutOfBounds() {
+      var seq = Seq.of(24, 36).map(__ -> fail(""));
+      assertAll(
+          () -> assertThrows(IndexOutOfBoundsException.class, () -> seq.get(-1)),
+          () -> assertThrows(IndexOutOfBoundsException.class, () -> seq.get(2))
+      );
+    }
+
+    @Test
+    public void testOfMapSize() {
+      var seq = Seq.of(101, 201, 301);
+      seq = seq.map(x -> 2 * x);
+      assertEquals(3, seq.size());
+    }
+
+    @Test
+    public void testMapNotCalledForSize() {
+      var seq = Seq.of(42, 777);
+      var seq2 = seq.map(x -> { fail("should not be called"); return null; });
+
+      assertEquals(2, seq2.size());
+    }
+
+    @Test
+    public void testOfMapShouldNotBeCalledForSize() {
+      var seq = Seq.of(42, 777);
+      var seq2 = seq.map(x -> { fail("should not be called"); return null; });
+      var seq3 = seq2.map(x -> { fail("should not be called"); return null; });
+
+      assertEquals(2, seq3.size());
+    }
+
+    @Test
+    public void testOfMapToString() {
+      var seq = Seq.of(10, 20);
+      seq = seq.map(x -> 2 * x);
+      assertEquals("<20, 40>", seq.toString());
+    }
+
+    @Test
+    public void testOfMapToStringShouldNotBeCalledIfEmpty() {
+      var seq = Seq.of().map(__ -> fail(""));
+      assertEquals("<>", seq.toString());
+    }
+
+    @Test
+    public void testOnlyOneImplementation() {
+      assertSame(Seq.from(List.of()).getClass(), Seq.of().getClass());
+    }
+  }
+
+
+  @Nested
+  public class Q7  {
+    @Test
+    public void testIteratorEnhancedForIntegers() {
+      var seq = Seq.from(List.of(25, 52));
+      var list = new ArrayList<Integer>();
+      for(Integer value: seq) {
+        list.add(value);
+      }
+      assertEquals(List.of(25, 52), list);
+    }
+
+    @Test
+    public void testIteratorEnhancedForStrings() {
+      var seq = Seq.from(List.of("25", "52"));
+      var list = new ArrayList<String>();
+      for(String value: seq) {
+        list.add(value);
+      }
+      assertEquals(List.of("25", "52"), list);
+    }
+
+    @Test
+    public void testIterator() {
+      var seq = Seq.from(List.of("foo", "bar"));
+      Iterator<String> it = seq.iterator();
+      assertTrue(it.hasNext());
+      assertEquals("foo", it.next());
+      assertTrue(it.hasNext());
+      assertEquals("bar", it.next());
+      assertFalse(it.hasNext());
+    }
+
+    @Test
+    public void testIteratorALot() {
+      var seq = Seq.from(range(0, 10_000).boxed().toList());
+      Iterator<Integer> it = seq.iterator();
+      for(var i = 0; i < 10_000; i++) {
+        IntStream.range(0, 17).forEach(x -> assertTrue(it.hasNext()));
+        assertEquals(i, (int)it.next());
+      }
+      IntStream.range(0, 17).forEach(x -> assertFalse(it.hasNext()));
+    }
+
+    @Test
+    public void testIteratorAtTheEnd() {
+      var seq = Seq.from(List.of(67, 89));
+      Iterator<Integer> it = seq.iterator();
+      assertEquals(67, (int)it.next());
+      assertEquals(89, (int)it.next());
+      assertThrows(NoSuchElementException.class, it::next);
+    }
+
+    @Test
+    public void testIteratorMap() {
+      var seq = Seq.from(List.of(13, 666)).map(x -> x / 2);
+      var list = new ArrayList<Integer>();
+      seq.iterator().forEachRemaining(list::add);
+      assertEquals(List.of(6, 333), list);
+    }
+
+    @Test
+    public void testIteratorRemove() {
+      var empty = Seq.from(List.of());
+      assertThrows(UnsupportedOperationException.class, () -> empty.iterator().remove());
+    }
+
+    @Test
+    public void testIteratorMapNotCalledIfEmpty() {
+      var seq = Seq.from(List.of()).map(__ -> fail(""));
+      var it = seq.iterator();
+      assertFalse(it.hasNext());
+    }
+
+    @Test
+    public void testForEachEmpty() {
+      var empty = Seq.from(List.of());
+      empty.forEach(x -> fail("should not be called"));
+    }
+
+    @Test
+    public void testForEachSignature() {
+      var seq = Seq.from(List.of(1));
+      seq.forEach((Object o) -> assertEquals(1, o));
+    }
+
+    @Test
+    public void testForEachNull() {
+      var seq = Seq.from(List.of(1, 2));
+      assertThrows(NullPointerException.class, () -> seq.forEach(null));
+    }
+
+    @Test
+    public void testForEachNullEmpty() {
+      var seq = Seq.from(List.of());
+      assertThrows(NullPointerException.class, () -> seq.forEach(null));
+    }
+
+    @Test
+    public void testForEachALot() {
+      var list = range(0, 1_000_000).boxed().toList();
+      var seq = Seq.from(list);
+      var l = new ArrayList<Integer>();
+      assertTimeoutPreemptively(Duration.ofMillis(1_000), () -> seq.forEach(l::add));
+      assertEquals(list, l);
+    }
+
+    @Test
+    public void testOfMapForEach() {
+      var seq = Seq.from(List.of("1", "2", "3"));
+      var seq2 = seq.map(Integer::parseInt);
+
+      var list = new ArrayList<Integer>();
+      seq2.forEach(list::add);
+      assertEquals(List.of(1, 2, 3), list);
+    }
+
+    @Test
+    public void testOfMapForEachCompose() {
+      var seq = Seq.from(List.of("1", "2", "3"));
+      var seq2 = seq.map(Integer::parseInt);
+      var seq3 = seq2.map(String::valueOf);
+
+      var list = new ArrayList<String>();
+      seq3.forEach(list::add);
+      assertEquals(List.of("1", "2", "3"), list);
+    }
+
+    @Test
+    public void testOfMapForEachShouldNotBeCalledIfEmpty() {
+      var seq = Seq.from(List.of()).map(__ -> fail(""));
+      seq.forEach(__ -> fail(""));
+    }
+  }
+
 //  @Nested
 //  public class Q8  {
 //    @Test
