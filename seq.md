@@ -112,12 +112,111 @@ public interface Seq<T> {
 class SeqImpl <T,R> implements Seq<T>{
 	...
 	@SuppressWarnings("unchecked")
-	public Optional<R> findFirst() {
-		return selfList.stream().findFirst().isEmpty()?Optional.empty(): selfList.stream().findAny();
+	public Optional<T> findFirst() {
+		return selfList.stream().findFirst().isEmpty()? Optional.empty():Optional.of(selfFunction.apply(selfList.stream().findFirst().get()));		
 	}
 }
 ```
 Le type de retour doit etre ``Optional<T>``
 
 ### 5. On souhaite implanter la méthode stream() qui renvoie un Stream des éléments du Seq. Pour cela, on va commencer par implanter un Spliterator. Ici, on a deux façon d'implanter le Spliterator : soit on utilise le Spliterator de la liste sous-jacente, soit on utilise des indices. Expliquer dans quel cas on utilise l'un ou l'autre, sachant que nos données sont stockées dans une List.<br>Ensuite, on peut créer la classe correspondant au Spliterator à deux endroits : soit comme une classe interne de la classe SeqImpl, soit comme une classe anonyme d'une méthode spliterator(start, end), quelle est à votre avis le meilleur endroit ?
-````````````````````````
+```java
+public interface Seq<T> {
+	...
+	Stream<T> stream();
+}
+```
+```java
+class SeqImpl <T,R> implements Seq<T>{
+	...
+	public Spliterator<T> spliterator(int start, int end){
+		return new Spliterator<>() {
+			private int cur = start;
+			@Override
+			public boolean tryAdvance(Consumer<? super T> action) {
+				Objects.requireNonNull(action);
+				if(cur < end) {
+					action.accept(selfFunction.apply(selfList.get(cur++)));
+					return true;
+				}
+				return false;
+			}
+
+			@Override
+			public Spliterator<T> trySplit() {
+				var middle = (cur+end) >>>1;
+				if(middle == cur) {
+					return null;
+				}
+				var split = spliterator(cur,middle);
+				cur = middle;
+				return split;
+				
+			}
+
+			@Override
+			public long estimateSize() {
+				return end - cur;
+			}
+
+			@Override
+			public int characteristics() {
+				return IMMUTABLE | ORDERED;
+			}
+			
+		};
+	}
+	
+	@Override
+	public Stream<T> stream() {
+		Spliterator<T> spliterator = spliterator(0,selfList.size());
+		return StreamSupport.stream(spliterator, false);
+	}
+}
+```
+Je n'ai pas réussis à finir
+
+### 6. On souhaite ajouter une méthode of à l'interface Seq permettant d'initialiser un Seq à partir de valeurs séparées par des virgules.
+```java
+public interface Seq<T>{
+	...
+	@SafeVarargs
+	public static <T>Seq<T> of(T... values) {
+		Objects.requireNonNull(values);
+		return from(List.of(values));
+	}
+}
+```
+### 7. On souhaite faire en sorte que l'on puisse utiliser la boucle for-each-in sur un Seq.
+```java
+public interface Seq<T> extends Iterable<T>{
+	...
+}
+```
+
+```java
+class SeqImpl <T,R> implements Seq<T>{
+	...
+	@Override
+	public Iterator<T> iterator() {
+		return new Iterator<T>() {
+			private int index = 0;
+			@Override
+			public boolean hasNext() {
+				return index < size();
+			}
+
+			@Override
+			public T next() {
+				if(!hasNext()) {
+					throw new NoSuchElementException();
+				}
+				var indexNow = index;
+				index++;
+				return get(indexNow);
+			}
+		};
+	}
+}
+
+```

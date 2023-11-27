@@ -2,6 +2,7 @@ package fr.uge.seq;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Spliterator;
@@ -48,44 +49,74 @@ class SeqImpl <T,R> implements Seq<T>{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Optional<R> findFirst() {
-		return selfList.stream().findFirst().isEmpty()?Optional.empty(): selfList.stream().findAny();
+	public Optional<T> findFirst() {
+		return selfList.stream().findFirst().isEmpty()? Optional.empty():Optional.of(selfFunction.apply(selfList.stream().findFirst().get()));		
 	}
 
-	public static <T> Spliterator<T> fromIterator(Iterator<? extends T> it){
-		return new Spliterator<>() {
 
+	public Spliterator<T> spliterator(int start, int end){
+		return new Spliterator<>() {
+			private int cur = start;
 			@Override
 			public boolean tryAdvance(Consumer<? super T> action) {
-				if(!it.hasNext()) {
-					return false;
+				Objects.requireNonNull(action);
+				if(cur < end) {
+					action.accept(selfFunction.apply(selfList.get(cur++)));
+					return true;
 				}
-				action.accept(it.next());
-				return true;
+				return false;
 			}
 
 			@Override
 			public Spliterator<T> trySplit() {
-				return null;
+				var middle = (cur+end) >>>1;
+				if(middle == cur) {
+					return null;
+				}
+				var split = spliterator(cur,middle);
+				cur = middle;
+				return split;
+				
 			}
 
 			@Override
 			public long estimateSize() {
-				// TODO Auto-generated method stub
-				return Long.MAX_VALUE;
+				return end - cur;
 			}
 
 			@Override
 			public int characteristics() {
-				// TODO Auto-generated method stub
-				return 0;
+				return IMMUTABLE | ORDERED;
 			}
 			
 		};
 	}
+	
 	@Override
 	public Stream<T> stream() {
-		Spliterator<T> spliterator = fromIterator();
-		return StreamSupport.stream(spliterator, true);
+		Spliterator<T> spliterator = spliterator(0,selfList.size());
+		return StreamSupport.stream(spliterator, false);
+	}
+
+	@Override
+	public Iterator<T> iterator() {
+		return new Iterator<T>() {
+			private int index = 0;
+			@Override
+			public boolean hasNext() {
+				return index < size();
+			}
+
+			@Override
+			public T next() {
+				if(!hasNext()) {
+					throw new NoSuchElementException();
+				}
+				var indexNow = index;
+				index++;
+				return get(indexNow);
+			}
+			
+		};
 	}
 }
