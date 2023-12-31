@@ -1,5 +1,6 @@
 package fr.uge.numeric;
 
+import java.util.AbstractList;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Spliterator;
@@ -9,7 +10,7 @@ import java.util.function.ToLongFunction;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public class NumericVec<T> {
+public class NumericVec<T> extends AbstractList<T>{
 
 	private long[] numericArray;
 	private int sizeOf; 
@@ -37,13 +38,14 @@ public class NumericVec<T> {
 		return from.apply(numericArray[index]);
 	}
 
-	public void add(T value) {
+	public boolean add(T value) {
 		Objects.requireNonNull(value);
 		if(sizeOf>=numericArray.length) {
 			numericArray = Arrays.copyOf(numericArray,(sizeOf+1)*2);
 		}
 		numericArray[sizeOf]=into.applyAsLong(value);
 		sizeOf++;
+		return true;
 	}
 
 	@SafeVarargs
@@ -103,13 +105,11 @@ public class NumericVec<T> {
 
 			@Override
 			public long estimateSize() {
-				// TODO Auto-generated method stub
 				return end -i;
 			}
 
 			@Override
 			public int characteristics() {
-				// TODO Auto-generated method stub
 				return NONNULL | ORDERED | IMMUTABLE | SIZED;
 			}
 		};

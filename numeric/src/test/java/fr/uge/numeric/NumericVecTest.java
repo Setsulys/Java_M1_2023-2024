@@ -320,182 +320,182 @@ public class NumericVecTest {
     }
   }
 
-//  @Nested
-//  public class Q5 {
-//    @Test
-//    public void intsIsAList() {
-//      List<Integer> list = NumericVec.ints(1, 2, 3, 4);
-//      assertAll(
-//          () -> assertEquals(4, list.size()),
-//          () -> assertFalse(list.isEmpty()),
-//          () -> assertEquals(2, list.get(1)),
-//          //() -> assertEquals(1, list.getFirst()),
-//          //() -> assertEquals(4, list.getLast()),
-//          () -> assertTrue(list.contains(3))
-//      );
-//    }
-//
-//    @Test
-//    public void longsIsAList() {
-//      List<Long> list = NumericVec.longs(1L, 2L, 3L, 4L);
-//      assertAll(
-//          () -> assertEquals(4, list.size()),
-//          () -> assertFalse(list.isEmpty()),
-//          () -> assertEquals(2L, list.get(1)),
-//          //() -> assertEquals(1L, list.getFirst()),
-//          //() -> assertEquals(4L, list.getLast()),
-//          () -> assertTrue(list.contains(3L))
-//      );
-//    }
-//
-//    @Test
-//    public void doublesIsAList() {
-//      List<Double> list = NumericVec.doubles(1., 2., 3., 4.);
-//      assertAll(
-//          () -> assertEquals(4, list.size()),
-//          () -> assertFalse(list.isEmpty()),
-//          () -> assertEquals(2., list.get(1)),
-//          //() -> assertEquals(1., list.getFirst()),
-//          //() -> assertEquals(4., list.getLast()),
-//          () -> assertTrue(list.contains(3.))
-//      );
-//    }
-//
-//    @Test
-//    public void emptyIntsAsList() {
-//      List<Integer> list = NumericVec.ints();
-//      assertAll(
-//          () -> assertEquals(0, list.size()),
-//          () -> assertTrue(list.isEmpty()),
-//          () -> assertThrows(IndexOutOfBoundsException.class, () -> list.get(1)),
-//          //() -> assertThrows(NoSuchElementException.class,  list::getFirst),
-//          //() -> assertThrows(NoSuchElementException.class,  list::getLast),
-//          () -> assertFalse(list.contains(3))
-//      );
-//    }
-//
-//    @Test
-//    public void emptyLongsAsList() {
-//      List<Long> list = NumericVec.longs();
-//      assertAll(
-//          () -> assertEquals(0, list.size()),
-//          () -> assertTrue(list.isEmpty()),
-//          () -> assertThrows(IndexOutOfBoundsException.class, () -> list.get(1)),
-//          //() -> assertThrows(NoSuchElementException.class,  list::getFirst),
-//          //() -> assertThrows(NoSuchElementException.class,  list::getLast),
-//          () -> assertFalse(list.contains(3L))
-//      );
-//    }
-//
-//    @Test
-//    public void emptyDoublesAsList() {
-//      List<Double> list = NumericVec.doubles();
-//      assertAll(
-//          () -> assertEquals(0, list.size()),
-//          () -> assertTrue(list.isEmpty()),
-//          () -> assertThrows(IndexOutOfBoundsException.class, () -> list.get(1)),
-//          //() -> assertThrows(NoSuchElementException.class,  list::getFirst),
-//          //() -> assertThrows(NoSuchElementException.class,  list::getLast),
-//          () -> assertFalse(list.contains(3.))
-//      );
-//    }
-//
-//    @Test
-//    public void intsToString() {
-//      List<Integer> list = NumericVec.ints(1, 2, 3, 4);
-//      assertEquals("[1, 2, 3, 4]", "" + list);
-//    }
-//
-//    @Test
-//    public void longsToString() {
-//      List<Long> list = NumericVec.longs(1L, 2L, 3L, 4L);
-//      assertEquals("[1, 2, 3, 4]", "" + list);
-//    }
-//
-//    @Test
-//    public void doublesToString() {
-//      List<Double> list = NumericVec.doubles(1., 2., 3., 4.);
-//      assertEquals("[1.0, 2.0, 3.0, 4.0]", "" + list);
-//    }
-//
-//    @Test
-//    public void intsForEachLoop() {
-//      var vec = NumericVec.ints(1, 2, 3, 4);
-//      var sum = 0;
-//      for(var item : vec) {
-//        sum += item;
-//      }
-//      assertEquals(10, sum);
-//    }
-//
-//    @Test
-//    public void longsForEachLoop() {
-//      var vec = NumericVec.longs(1L, 2L, 3L, 4L);
-//      var sum = 0L;
-//      for(var item : vec) {
-//        sum += item;
-//      }
-//      assertEquals(10L, sum);
-//    }
-//
-//    @Test
-//    public void doublesForEachLoop() {
-//      var vec = NumericVec.doubles(1., 2., 3., 4.);
-//      var sum = .0;
-//      for(var item : vec) {
-//        sum += item;
-//      }
-//      assertEquals(10.0, sum);
-//    }
-//
-//    @Test
-//    public void spliteratorCharacteristics() {
-//      var spliterator = NumericVec.ints().spliterator();
-//      assertAll(
-//          () -> assertTrue(spliterator.hasCharacteristics(Spliterator.NONNULL)),
-//          () -> assertTrue(spliterator.hasCharacteristics(Spliterator.ORDERED)),
-//          () -> assertTrue(spliterator.hasCharacteristics(Spliterator.IMMUTABLE))
-//      );
-//    }
-//
-//    @Test
-//    public void intsVecEquals() {
-//      var vec = NumericVec.ints(1, 2, 3, 4);
-//      assertEquals(NumericVec.ints(1, 2, 3, 4), vec);
-//    }
-//
-//    @Test
-//    public void longsVecEquals() {
-//      var vec = NumericVec.longs(1L, 2L, 3L, 4L);
-//      assertEquals(NumericVec.longs(1L, 2L, 3L, 4L), vec);
-//    }
-//
-//    @Test
-//    public void doublesVecEquals() {
-//      var vec = NumericVec.doubles(1., 2., 3., 4.);
-//      assertEquals(NumericVec.doubles(1., 2., 3., 4.), vec);
-//    }
-//
-//    @Test
-//    public void intsEquals() {
-//      var vec = NumericVec.ints(1, 2, 3, 4);
-//      assertEquals(List.of(1, 2, 3, 4), vec);
-//    }
-//
-//    @Test
-//    public void longsEquals() {
-//      var vec = NumericVec.longs(1L, 2L, 3L, 4L);
-//      assertEquals(List.of(1L, 2L, 3L, 4L), vec);
-//    }
-//
-//    @Test
-//    public void doublesEquals() {
-//      var vec = NumericVec.doubles(1., 2., 3., 4.);
-//      assertEquals(List.of(1., 2., 3., 4.), vec);
-//    }
-//  }
-//
-//
+  @Nested
+  public class Q5 {
+    @Test
+    public void intsIsAList() {
+      List<Integer> list = NumericVec.ints(1, 2, 3, 4);
+      assertAll(
+          () -> assertEquals(4, list.size()),
+          () -> assertFalse(list.isEmpty()),
+          () -> assertEquals(2, list.get(1)),
+          //() -> assertEquals(1, list.getFirst()),
+          //() -> assertEquals(4, list.getLast()),
+          () -> assertTrue(list.contains(3))
+      );
+    }
+
+    @Test
+    public void longsIsAList() {
+      List<Long> list = NumericVec.longs(1L, 2L, 3L, 4L);
+      assertAll(
+          () -> assertEquals(4, list.size()),
+          () -> assertFalse(list.isEmpty()),
+          () -> assertEquals(2L, list.get(1)),
+          //() -> assertEquals(1L, list.getFirst()),
+          //() -> assertEquals(4L, list.getLast()),
+          () -> assertTrue(list.contains(3L))
+      );
+    }
+
+    @Test
+    public void doublesIsAList() {
+      List<Double> list = NumericVec.doubles(1., 2., 3., 4.);
+      assertAll(
+          () -> assertEquals(4, list.size()),
+          () -> assertFalse(list.isEmpty()),
+          () -> assertEquals(2., list.get(1)),
+          //() -> assertEquals(1., list.getFirst()),
+          //() -> assertEquals(4., list.getLast()),
+          () -> assertTrue(list.contains(3.))
+      );
+    }
+
+    @Test
+    public void emptyIntsAsList() {
+      List<Integer> list = NumericVec.ints();
+      assertAll(
+          () -> assertEquals(0, list.size()),
+          () -> assertTrue(list.isEmpty()),
+          () -> assertThrows(IndexOutOfBoundsException.class, () -> list.get(1)),
+          //() -> assertThrows(NoSuchElementException.class,  list::getFirst),
+          //() -> assertThrows(NoSuchElementException.class,  list::getLast),
+          () -> assertFalse(list.contains(3))
+      );
+    }
+
+    @Test
+    public void emptyLongsAsList() {
+      List<Long> list = NumericVec.longs();
+      assertAll(
+          () -> assertEquals(0, list.size()),
+          () -> assertTrue(list.isEmpty()),
+          () -> assertThrows(IndexOutOfBoundsException.class, () -> list.get(1)),
+          //() -> assertThrows(NoSuchElementException.class,  list::getFirst),
+          //() -> assertThrows(NoSuchElementException.class,  list::getLast),
+          () -> assertFalse(list.contains(3L))
+      );
+    }
+
+    @Test
+    public void emptyDoublesAsList() {
+      List<Double> list = NumericVec.doubles();
+      assertAll(
+          () -> assertEquals(0, list.size()),
+          () -> assertTrue(list.isEmpty()),
+          () -> assertThrows(IndexOutOfBoundsException.class, () -> list.get(1)),
+          //() -> assertThrows(NoSuchElementException.class,  list::getFirst),
+          //() -> assertThrows(NoSuchElementException.class,  list::getLast),
+          () -> assertFalse(list.contains(3.))
+      );
+    }
+
+    @Test
+    public void intsToString() {
+      List<Integer> list = NumericVec.ints(1, 2, 3, 4);
+      assertEquals("[1, 2, 3, 4]", "" + list);
+    }
+
+    @Test
+    public void longsToString() {
+      List<Long> list = NumericVec.longs(1L, 2L, 3L, 4L);
+      assertEquals("[1, 2, 3, 4]", "" + list);
+    }
+
+    @Test
+    public void doublesToString() {
+      List<Double> list = NumericVec.doubles(1., 2., 3., 4.);
+      assertEquals("[1.0, 2.0, 3.0, 4.0]", "" + list);
+    }
+
+    @Test
+    public void intsForEachLoop() {
+      var vec = NumericVec.ints(1, 2, 3, 4);
+      var sum = 0;
+      for(var item : vec) {
+        sum += item;
+      }
+      assertEquals(10, sum);
+    }
+
+    @Test
+    public void longsForEachLoop() {
+      var vec = NumericVec.longs(1L, 2L, 3L, 4L);
+      var sum = 0L;
+      for(var item : vec) {
+        sum += item;
+      }
+      assertEquals(10L, sum);
+    }
+
+    @Test
+    public void doublesForEachLoop() {
+      var vec = NumericVec.doubles(1., 2., 3., 4.);
+      var sum = .0;
+      for(var item : vec) {
+        sum += item;
+      }
+      assertEquals(10.0, sum);
+    }
+
+    @Test
+    public void spliteratorCharacteristics() {
+      var spliterator = NumericVec.ints().spliterator();
+      assertAll(
+          () -> assertTrue(spliterator.hasCharacteristics(Spliterator.NONNULL)),
+          () -> assertTrue(spliterator.hasCharacteristics(Spliterator.ORDERED)),
+          () -> assertTrue(spliterator.hasCharacteristics(Spliterator.IMMUTABLE))
+      );
+    }
+
+    @Test
+    public void intsVecEquals() {
+      var vec = NumericVec.ints(1, 2, 3, 4);
+      assertEquals(NumericVec.ints(1, 2, 3, 4), vec);
+    }
+
+    @Test
+    public void longsVecEquals() {
+      var vec = NumericVec.longs(1L, 2L, 3L, 4L);
+      assertEquals(NumericVec.longs(1L, 2L, 3L, 4L), vec);
+    }
+
+    @Test
+    public void doublesVecEquals() {
+      var vec = NumericVec.doubles(1., 2., 3., 4.);
+      assertEquals(NumericVec.doubles(1., 2., 3., 4.), vec);
+    }
+
+    @Test
+    public void intsEquals() {
+      var vec = NumericVec.ints(1, 2, 3, 4);
+      assertEquals(List.of(1, 2, 3, 4), vec);
+    }
+
+    @Test
+    public void longsEquals() {
+      var vec = NumericVec.longs(1L, 2L, 3L, 4L);
+      assertEquals(List.of(1L, 2L, 3L, 4L), vec);
+    }
+
+    @Test
+    public void doublesEquals() {
+      var vec = NumericVec.doubles(1., 2., 3., 4.);
+      assertEquals(List.of(1., 2., 3., 4.), vec);
+    }
+  }
+
+
 //  @Nested
 //  public class Q6 {
 //    @Test
